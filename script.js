@@ -81,17 +81,61 @@ const progressBar = document.getElementById("progressBar");
 const result = document.getElementById("result");
 const resultTitle = document.getElementById("resultTitle");
 const resultText = document.getElementById("resultText");
+const migoStateImage = document.getElementById("migoStateImage");
+const migoStatus = document.getElementById("migoStatus");
 const menuButton = document.getElementById("menuButton");
 const nav = document.getElementById("nav");
+
+function setMigoState(state) {
+  if (!migoStateImage || !migoStatus) return;
+
+  const states = {
+    anotando: {
+      src: "assets/migo-anotando.png",
+      alt: "Consultor Migo anotando",
+      status: "Anotando..."
+    },
+    pensando: {
+      src: "assets/migo-pensando.png",
+      alt: "Consultor Migo pensando",
+      status: "Pensando..."
+    },
+    vibrando: {
+      src: "assets/migo-vibrando.png",
+      alt: "Consultor Migo comemorando",
+      status: "Diagnóstico concluído!"
+    }
+  };
+
+  const selected = states[state] || states.anotando;
+  migoStateImage.src = selected.src;
+  migoStateImage.alt = selected.alt;
+  migoStatus.textContent = selected.status;
+  migoStateImage.classList.toggle("migo-vibrando", state === "vibrando");
+}
+
+function setProgressColor(percent) {
+  let color = "var(--green)";
+  if (percent >= 70) {
+    color = "var(--orange)";
+  } else if (percent >= 30) {
+    color = "var(--blue-400)";
+  }
+
+  progressPercent.style.color = color;
+  progressBar.style.background = color;
+}
 
 function renderQuestion() {
   const question = questions[currentQuestion];
   const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
 
+  setMigoState("anotando");
   questionText.textContent = question.text;
   questionCounter.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
   progressPercent.textContent = `${percent}%`;
   progressBar.style.width = `${percent}%`;
+  setProgressColor(percent);
   options.innerHTML = "";
 
   question.options.forEach(option => {
@@ -113,14 +157,23 @@ function selectOption(category, answerLabel) {
       categoria: category
     });
   }
-  scores[category] += 1;
-  currentQuestion += 1;
 
-  if (currentQuestion < questions.length) {
-    renderQuestion();
-  } else {
-    showResult();
-  }
+  scores[category] += 1;
+  setMigoState("pensando");
+
+  document.querySelectorAll(".option-button").forEach(button => {
+    button.disabled = true;
+  });
+
+  window.setTimeout(() => {
+    currentQuestion += 1;
+
+    if (currentQuestion < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }, 650);
 }
 
 function showResult() {
@@ -141,6 +194,8 @@ function showResult() {
   questionCounter.textContent = "Diagnóstico concluído";
   progressPercent.textContent = "100%";
   progressBar.style.width = "100%";
+  setProgressColor(100);
+  setMigoState("vibrando");
   options.innerHTML = "";
 
   resultTitle.textContent = diagnostic.title;

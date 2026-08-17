@@ -951,3 +951,134 @@ footer p {
   .brand-logo { width: 96px; height: 48px; }
   .hero-actions-three .button { width: 100%; text-align: center; }
 }
+
+
+/* =========================================================
+   AJUSTE CONSULTOR MIGO — preserva o layout atual
+   ========================================================= */
+.diagnostic-layout {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.diagnostic-migo {
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+}
+
+.diagnostic-migo img {
+  width: min(100%, 205px);
+  height: 285px;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.diagnostic-migo strong {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.diagnostic-migo span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.diagnostic-main {
+  min-width: 0;
+}
+
+.diagnostic-main .progress-top,
+.diagnostic-main .progress-track,
+.diagnostic-main .question-area,
+.diagnostic-main .options,
+.diagnostic-main .result {
+  width: 100%;
+}
+
+.diagnostic-main .question-area {
+  display: block;
+}
+
+.diagnostic-main .progress-track {
+  margin: 18px 0 30px;
+}
+
+.progress-bar {
+  background: var(--green);
+  transition: width .35s ease, background-color .25s ease;
+}
+
+#progressPercent {
+  transition: color .25s ease;
+}
+
+.option-button:disabled {
+  cursor: wait;
+  opacity: .65;
+  transform: none;
+}
+
+.result {
+  border-color: rgba(255,138,0,.30);
+  background: rgba(255,138,0,.07);
+}
+
+.migo-vibrando {
+  animation: migoVibrando .32s ease-in-out 0s 6 alternate;
+}
+
+@keyframes migoVibrando {
+  from { transform: translateX(-3px) rotate(-1deg) scale(1); }
+  to   { transform: translateX(3px) rotate(1deg) scale(1.025); }
+}
+
+@media (max-width: 700px) {
+  .diagnostic-layout {
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .diagnostic-migo {
+    min-height: 280px;
+    justify-content: flex-start;
+    padding-top: 48px;
+  }
+
+  .diagnostic-migo img {
+    width: 105px;
+    height: 185px;
+    object-position: center top;
+  }
+
+  .diagnostic-migo strong {
+    font-size: 11px;
+  }
+
+  .diagnostic-migo span {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .diagnostic-layout {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .diagnostic-migo img {
+    width: 84px;
+    height: 160px;
+  }
+
+  .diagnostic-migo strong {
+    display: none;
+  }
+}
