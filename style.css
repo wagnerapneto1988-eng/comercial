@@ -907,3 +907,33 @@ footer p {
 .admin-whatsapp-button { border: 0; cursor: pointer; color: #fff; font: inherit; }
 .admin-whatsapp-button:disabled { cursor: not-allowed; opacity: .45; filter: grayscale(.65); box-shadow: none; transform: none; }
 @media (max-width: 700px) { .diagnostic-card-actions { justify-content: stretch; } .admin-whatsapp-button { width: 100%; } }
+
+/* ===== NOVO LAYOUT CLEAN — 17/08/2026 ===== */
+.public-page { background:#050b1d; }
+.layout-hero { position:relative; width:min(1024px,100%); margin:0 auto; line-height:0; }
+.layout-hero-image { display:block; width:100%; height:auto; }
+.layout-hotspot { position:absolute; display:block; z-index:5; border-radius:18px; background:rgba(255,255,255,0); }
+.layout-hotspot:focus-visible { outline:3px solid #26b7ff; outline-offset:3px; }
+.hotspot-quem { left:43.5%; top:3.8%; width:20%; height:9.5%; }
+.hotspot-missao { left:67.5%; top:3.8%; width:24%; height:9.5%; }
+.hotspot-diagnostico { left:4.2%; top:60.2%; width:38.5%; height:8.2%; }
+.hotspot-whatsapp { right:1.8%; top:78%; width:17%; height:13%; border-radius:50%; }
+.clean-section { width:min(1024px,100%); margin:0 auto; padding:76px 24px; background:linear-gradient(180deg,#050b1d,#07142e); }
+.clean-card { max-width:760px; margin:0 auto; padding:38px; border:1px solid rgba(38,183,255,.28); border-radius:26px; background:rgba(7,20,46,.78); box-shadow:0 24px 70px rgba(0,0,0,.25); }
+.clean-card h2 { margin:10px 0 16px; font-size:clamp(34px,5vw,56px); line-height:1.05; letter-spacing:-2px; }
+.clean-card p { color:#c2cee0; font-size:17px; }
+.clean-back { display:inline-block; margin-top:20px; color:#ff8a00; font-weight:800; }
+.clean-cta { width:min(1024px,100%); margin:0 auto; padding:46px 36px; display:flex; gap:24px; align-items:center; justify-content:space-between; background:#07142e; border-top:1px solid rgba(255,255,255,.08); }
+.clean-cta h2 { margin-top:7px; font-size:clamp(26px,4vw,42px); }
+.clean-footer { width:min(1024px,100%); margin:0 auto; padding:34px 24px 28px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; border-top:1px solid rgba(38,183,255,.22); color:#dce7fa; background:#050b1d; }
+.clean-footer strong { color:#fff; }
+.clean-footer small { color:#8fa2bd; }
+.admin-access { margin-left:auto; color:#63748d; font-size:12px; }
+.result .button-whatsapp { margin-top:18px; }
+.public-page .experience { padding-top:86px; }
+@media (max-width:700px) {
+  .clean-cta { align-items:flex-start; flex-direction:column; }
+  .clean-card { padding:26px; }
+  .clean-footer { flex-direction:column; align-items:flex-start; }
+  .admin-access { margin-left:0; }
+}

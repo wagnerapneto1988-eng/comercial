@@ -143,3 +143,22 @@ nav.querySelectorAll("a").forEach(link => {
 document.getElementById("year").textContent = new Date().getFullYear();
 
 renderQuestion();
+
+// ===== WhatsApp WAP =====
+const WAP_WHATSAPP = "5511988555913";
+const WAP_READY_MESSAGE = "Olá! Conheci a WAP Consultoria Digital através do Consultor Migo e gostaria de saber mais sobre as soluções.";
+function wapUrl(message = WAP_READY_MESSAGE) {
+  return `https://wa.me/${WAP_WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
+["whatsappFloating", "footerWhatsapp"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.href = wapUrl();
+});
+const resultWhatsapp = document.getElementById("resultWhatsapp");
+if (resultWhatsapp) {
+  resultWhatsapp.addEventListener("click", function () {
+    const title = document.getElementById("resultTitle")?.textContent?.trim() || "";
+    const text = document.getElementById("resultText")?.textContent?.trim() || "";
+    this.href = wapUrl(`Olá! Fiz o diagnóstico com o Consultor Migo.\n\n${title}\n${text}\n\nGostaria de saber mais sobre as soluções da WAP.`);
+  });
+}
