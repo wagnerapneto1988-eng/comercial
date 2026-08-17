@@ -116,6 +116,7 @@ function setMigoState(state) {
 
 function setProgressColor(percent) {
   let color = "var(--green)";
+
   if (percent >= 70) {
     color = "var(--orange)";
   } else if (percent >= 30) {
