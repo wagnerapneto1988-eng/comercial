@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WAP Consultoria Digital — diagnóstico interativo com o Consultor Migo." />
+  <meta name="theme-color" content="#050b1d" />
+  <title>WAP Consultoria Digital | Consultor Migo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="public-page">
+  <main>
+    <section class="layout-hero" id="inicio" aria-label="WAP Consultoria Digital">
+      <img class="layout-hero-image" src="assets/layout-wap-migo.png" alt="WAP Consultoria Digital. Transformamos suas ideias em soluções digitais. Sou o Consultor Migo. Vamos juntos?" />
+      <a class="layout-hotspot hotspot-quem" href="#quem-somos" aria-label="Quem somos"></a>
+      <a class="layout-hotspot hotspot-missao" href="#nossa-missao" aria-label="Nossa missão"></a>
+      <a class="layout-hotspot hotspot-diagnostico" href="#experiencia" aria-label="Iniciar diagnóstico"></a>
+      <a class="layout-hotspot hotspot-whatsapp" id="whatsappFloating" href="#" target="_blank" rel="noopener noreferrer" aria-label="Fale com a WAP pelo WhatsApp"></a>
+    </section>
+
+    <section class="clean-section" id="quem-somos">
+      <div class="clean-card">
+        <span class="section-kicker">WAP CONSULTORIA DIGITAL</span>
+        <h2>Quem somos</h2>
+        <p>Somos uma consultoria digital focada em transformar ideias e necessidades reais em soluções simples, viáveis e funcionais.</p>
+        <a class="clean-back" href="#inicio">Voltar ao início ↑</a>
+      </div>
+    </section>
+
+    <section class="clean-section" id="nossa-missao">
+      <div class="clean-card">
+        <span class="section-kicker">NOSSA MISSÃO</span>
+        <h2>Tecnologia que aproxima, organiza e gera resultados.</h2>
+        <p>Nossa missão é ajudar projetos e empresas a usar a tecnologia de forma clara, prática e adequada ao seu momento.</p>
+        <a class="clean-back" href="#inicio">Voltar ao início ↑</a>
+      </div>
+    </section>
+
+    <section class="experience" id="experiencia">
+      <div class="section-heading">
+        <span class="section-kicker">DIAGNÓSTICO INTERATIVO</span>
+        <h2>Vamos entender o que seu projeto <em>precisa agora.</em></h2>
+        <p>Responda perguntas simples. O Consultor Migo organiza suas respostas e apresenta um ponto de partida.</p>
+      </div>
+
+      <div class="diagnostic-card">
+        <div class="diagnostic-grid">
+          <aside class="diagnostic-migo" aria-live="polite">
+            <img id="migoStateImage" src="assets/migo-anotando.png" alt="Consultor Migo anotando" />
+            <strong>Consultor Migo</strong>
+            <span id="migoStatus">Anotando...</span>
+          </aside>
+
+          <div class="diagnostic-content">
+            <div class="progress-top">
+              <div>
+                <small>Diagnóstico Migo</small>
+                <strong id="questionCounter">Pergunta 1 de 5</strong>
+              </div>
+              <span id="progressPercent">20%</span>
+            </div>
+
+            <div class="progress-track" aria-label="Progresso do diagnóstico">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="question-area">
+              <h3 id="questionText"></h3>
+            </div>
+
+            <div class="options" id="options"></div>
+
+            <div class="result hidden" id="result">
+              <div class="result-copy">
+                <img class="result-logo" src="assets/logo-wap-original.jpeg" alt="WAP Consultoria Digital" />
+                <small>Seu diagnóstico inicial</small>
+                <h3 id="resultTitle"></h3>
+                <p id="resultText"></p>
+                <a class="button button-whatsapp" id="resultWhatsapp" href="#" target="_blank" rel="noopener noreferrer">Falar com a WAP no WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="clean-cta">
+      <div>
+        <span class="section-kicker">WAP CONSULTORIA DIGITAL</span>
+        <h2>Quer conversar antes de começar?</h2>
+      </div>
+      <a class="button button-whatsapp" id="footerWhatsapp" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </section>
+  </main>
+
+  <footer class="clean-footer">
+    <strong>WAP Consultoria Digital</strong>
+    <span>(11) 98855-5913 • Taboão da Serra, São Paulo</span>
+    <small>© <span id="year"></span> WAP Consultoria Digital.</small>
+    <a class="admin-access" href="admin.html" aria-label="Área administrativa">Área administrativa</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
