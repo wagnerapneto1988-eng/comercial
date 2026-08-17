@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "description": "Catálogo inicial de modelos de negócio do WAP Comercial.",
+  "models": [
+    {
+      "id": "pizzaria",
+      "name": "Pizzaria",
+      "status": "existente",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "cardápio",
+        "carrinho",
+        "pedido via WhatsApp"
+      ]
+    },
+    {
+      "id": "escola",
+      "name": "Escola / EAD",
+      "status": "planejado",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "cursos",
+        "aulas",
+        "progresso",
+        "avaliações"
+      ]
+    },
+    {
+      "id": "salao",
+      "name": "Salão / Barbearia",
+      "status": "planejado",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "agendamento",
+        "serviços",
+        "WhatsApp"
+      ]
+    },
+    {
+      "id": "loja",
+      "name": "Loja",
+      "status": "planejado",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "catálogo",
+        "carrinho",
+        "pedidos"
+      ]
+    },
+    {
+      "id": "petshop",
+      "name": "Pet Shop",
+      "status": "planejado",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "serviços",
+        "agendamento",
+        "WhatsApp"
+      ]
+    },
+    {
+      "id": "assistencia-tecnica",
+      "name": "Assistência Técnica",
+      "status": "planejado",
+      "repository": null,
+      "demo_url": null,
+      "features": [
+        "abertura de atendimento",
+        "acompanhamento",
+        "WhatsApp"
+      ]
+    }
+  ]
+}

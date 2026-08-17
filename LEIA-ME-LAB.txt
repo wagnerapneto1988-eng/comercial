@@ -1,0 +1,9 @@
+WAP COMERCIAL — LABORATÓRIO
+
+Projeto executável baseado na versão consolidada, acrescido de materiais antigos recuperáveis e sugestões experimentais.
+
+Use index.html normalmente.
+A pasta /legado contém versões anteriores apenas para consulta e comparação.
+O arquivo SUGESTOES_IMPLEMENTACAO.md registra ideias para futuras iterações.
+
+Não publicar este pacote sobre a versão principal sem validar as mudanças desejadas.

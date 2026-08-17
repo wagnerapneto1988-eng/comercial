@@ -99,12 +99,20 @@ function renderQuestion() {
     button.className = "option-button";
     button.type = "button";
     button.textContent = option.label;
-    button.addEventListener("click", () => selectOption(option.category));
+    button.addEventListener("click", () => selectOption(option.category, option.label));
     options.appendChild(button);
   });
 }
 
-function selectOption(category) {
+function selectOption(category, answerLabel) {
+  if (window.WAPTrack) {
+    window.WAPTrack(currentQuestion === 0 ? "diagnostico_iniciado" : "diagnostico_resposta", {
+      pergunta_numero: currentQuestion + 1,
+      pergunta: questions[currentQuestion]?.text,
+      resposta: answerLabel,
+      categoria: category
+    });
+  }
   scores[category] += 1;
   currentQuestion += 1;
 
@@ -120,6 +128,14 @@ function showResult() {
     .sort((a, b) => b[1] - a[1])[0][0];
 
   const diagnostic = diagnosticMap[bestCategory];
+
+  if (window.WAPTrack) {
+    window.WAPTrack("diagnostico_concluido", {
+      categoria_principal: bestCategory,
+      pontuacao: scores,
+      recomendacao: diagnostic.title
+    });
+  }
 
   questionText.textContent = "Pronto! Já conseguimos enxergar um bom ponto de partida.";
   questionCounter.textContent = "Diagnóstico concluído";
@@ -143,22 +159,3 @@ nav.querySelectorAll("a").forEach(link => {
 document.getElementById("year").textContent = new Date().getFullYear();
 
 renderQuestion();
-
-// ===== WhatsApp WAP =====
-const WAP_WHATSAPP = "5511988555913";
-const WAP_READY_MESSAGE = "Olá! Conheci a WAP Consultoria Digital através do Consultor Migo e gostaria de saber mais sobre as soluções.";
-function wapUrl(message = WAP_READY_MESSAGE) {
-  return `https://wa.me/${WAP_WHATSAPP}?text=${encodeURIComponent(message)}`;
-}
-["whatsappFloating", "footerWhatsapp"].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.href = wapUrl();
-});
-const resultWhatsapp = document.getElementById("resultWhatsapp");
-if (resultWhatsapp) {
-  resultWhatsapp.addEventListener("click", function () {
-    const title = document.getElementById("resultTitle")?.textContent?.trim() || "";
-    const text = document.getElementById("resultText")?.textContent?.trim() || "";
-    this.href = wapUrl(`Olá! Fiz o diagnóstico com o Consultor Migo.\n\n${title}\n${text}\n\nGostaria de saber mais sobre as soluções da WAP.`);
-  });
-}

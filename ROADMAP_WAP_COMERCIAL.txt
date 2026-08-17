@@ -1,0 +1,37 @@
+WAP COMERCIAL — ROADMAP
+
+FASE 1 — CONCLUÍDA / BASE
+[OK] Página comercial
+[OK] Diagnóstico
+[OK] Supabase
+[OK] Painel administrativo
+[OK] WhatsApp
+[OK] Rastreamento inicial da jornada
+[OK] Tabela jornada_eventos
+[OK] Novo layout clean definido
+
+FASE 2 — PRÓXIMA
+[ ] Integrar o layout clean definitivo à versão publicada
+[ ] Criar item "Modelos de Negócio" no Comercial
+[ ] Criar página/lista de segmentos
+[ ] Integrar o modelo de pizzaria
+[ ] Criar modelo Escola/EAD
+[ ] Registrar evento "modelo_aberto"
+[ ] Registrar evento "segmento_escolhido"
+[ ] Mostrar modelos mais acessados no admin
+
+FASE 3 — INTELIGÊNCIA COMERCIAL
+[ ] Associar session_id ao diagnóstico/lead
+[ ] Criar pontuação de interesse
+[ ] Criar status automático do lead
+[ ] Criar funil de conversão
+[ ] Criar relatórios por segmento
+[ ] Criar métricas de WhatsApp
+[ ] Criar origem/campanha dos links
+
+FASE 4 — AUTOMAÇÃO AVANÇADA
+[ ] Recomendações automáticas por comportamento
+[ ] Follow-up comercial orientado por eventos
+[ ] Links personalizados por segmento
+[ ] Painel com gráficos e indicadores
+[ ] Avaliar infraestrutura paga conforme volume real

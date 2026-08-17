@@ -14,6 +14,8 @@
   const diagnosticsGrid = document.getElementById("diagnosticsGrid");
   const adminStatus = document.getElementById("adminStatus");
   const sessionUser = document.getElementById("sessionUser");
+  const journeyStatus = document.getElementById("journeyStatus");
+  const journeyGrid = document.getElementById("journeyGrid");
 
   if (!cfg || !cfg.url || !cfg.key || !sdk?.createClient) {
     loginMessage.textContent = "Configuração do Supabase não carregou. Verifique sua conexão com a internet.";
@@ -164,6 +166,84 @@
     renderDiagnostics(response.data || []);
   }
 
+
+  function renderJourney(rows) {
+    if (!journeyGrid || !journeyStatus) return;
+    journeyGrid.innerHTML = "";
+
+    if (!rows.length) {
+      journeyStatus.textContent = "Nenhum evento de jornada registrado ainda.";
+      return;
+    }
+
+    const groups = new Map();
+    rows.forEach(row => {
+      const key = row.session_id || "sessao-sem-id";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(row);
+    });
+
+    journeyStatus.textContent =
+      `${rows.length} evento(s) recente(s) em ${groups.size} sessão(ões).`;
+
+    [...groups.entries()].slice(0, 30).forEach(([sessionId, events]) => {
+      const card = document.createElement("article");
+      card.className = "journey-card";
+
+      const latest = events[0];
+      const title = document.createElement("h3");
+      title.textContent = `Sessão ${sessionId.slice(0, 8)}…`;
+
+      const meta = document.createElement("p");
+      const when = latest.criado_em ? new Date(latest.criado_em).toLocaleString("pt-BR") : "";
+      meta.className = "journey-meta";
+      meta.textContent = `${events.length} evento(s) • último: ${when}`;
+
+      const timeline = document.createElement("div");
+      timeline.className = "journey-timeline";
+
+      events.slice(0, 12).reverse().forEach(row => {
+        const item = document.createElement("div");
+        item.className = "journey-event";
+
+        const eventName = document.createElement("strong");
+        eventName.textContent = humanize(row.evento || "evento");
+
+        const page = document.createElement("small");
+        page.textContent = row.pagina || "";
+
+        const data = document.createElement("pre");
+        data.textContent = formatValue(row.dados);
+
+        item.append(eventName, page, data);
+        timeline.appendChild(item);
+      });
+
+      card.append(title, meta, timeline);
+      journeyGrid.appendChild(card);
+    });
+  }
+
+  async function loadJourney() {
+    if (!journeyStatus || !journeyGrid) return;
+    journeyStatus.textContent = "Carregando jornada...";
+    journeyGrid.innerHTML = "";
+
+    const response = await client
+      .from("jornada_eventos")
+      .select("*")
+      .order("criado_em", { ascending: false })
+      .limit(300);
+
+    if (response.error) {
+      journeyStatus.textContent =
+        `Jornada ainda não disponível: ${response.error.message}. Execute supabase-jornada.sql no Supabase.`;
+      return;
+    }
+
+    renderJourney(response.data || []);
+  }
+
   async function showSession(session) {
     if (!session?.user) {
       loginCard.classList.remove("hidden");
@@ -175,7 +255,7 @@
     loginCard.classList.add("hidden");
     adminPanel.classList.remove("hidden");
     sessionUser.textContent = `Conectado como ${session.user.email || "usuário autenticado"}`;
-    await loadDiagnostics();
+    await Promise.all([loadDiagnostics(), loadJourney()]);
   }
 
   loginForm.addEventListener("submit", async event => {
@@ -200,7 +280,7 @@
     await showSession(data.session);
   });
 
-  refreshButton.addEventListener("click", loadDiagnostics);
+  refreshButton.addEventListener("click", () => Promise.all([loadDiagnostics(), loadJourney()]));
 
   logoutButton.addEventListener("click", async () => {
     await client.auth.signOut();

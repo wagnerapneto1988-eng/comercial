@@ -1,28 +1,24 @@
-WAP CONSULTORIA DIGITAL — NOVO LAYOUT + BASE FUNCIONAL
+WAP CONSULTORIA DIGITAL — VERSÃO CONSOLIDADA
+Data: 17/08/2026
 
-Esta versão foi criada sobre o ZIP que já estava publicado e funcionando.
+ESTA CÓPIA PRESERVA A BASE FUNCIONAL E AGREGA AS DECISÕES MAIS RECENTES.
 
-Mantido:
-- admin.html / admin.js (painel administrativo)
-- supabase-config.js (configuração pública já existente)
-- diagnóstico interativo da base
-- leitura de diagnósticos pelo painel administrativo
-- botão de proposta via WhatsApp no painel
+Incluído nesta versão:
+- Consultor Migo (substitui Professor Migo nos textos ativos).
+- Frase principal: “Transformamos suas ideias em soluções digitais.”
+- Chamada curta: “Vamos começar?”
+- Três caminhos principais: Conheça suas necessidades / Quem somos / Serviços e missão.
+- WhatsApp: 11 98855-5913 com mensagem preenchida automaticamente.
+- Botão flutuante de WhatsApp.
+- Supabase, painel administrativo e rastreamento de jornada preservados.
+- Pasta assets corrigida e incluída no ZIP.
+- assets/logo-wap.jpeg: logotipo WAP.
+- assets/consultor-migo-referencia.png: referência visual aprovada do Consultor Migo.
+- assets/layout-wap-migo.png: referência do layout anterior.
+- Arquitetura e roadmap preservados.
 
-Atualizado na página pública:
-- novo layout visual aprovado
-- logo/identidade visual WAP
-- frase: “Transformamos suas ideias em soluções digitais.”
-- Consultor Migo: “Sou o Consultor Migo. Vamos juntos?”
-- menu: Quem Somos / Nossa Missão
-- botão: INICIAR DIAGNÓSTICO
-- WhatsApp flutuante: (11) 98855-5913
-- mensagem pronta no WhatsApp
-- localização: Taboão da Serra, São Paulo
-- e-mail removido da abertura
+PUBLICAÇÃO
+Mantenha todos os arquivos e a pasta assets no mesmo nível de index.html.
 
-PUBLICAÇÃO NO GITHUB PAGES
-Extraia o ZIP e envie TODO o conteúdo da pasta WAP_Migo para a raiz do repositório, mantendo a pasta assets.
-
-PAINEL ADMINISTRATIVO
-Acesse: admin.html
+IMPORTANTE
+Os arquivos de imagem em assets também funcionam como referências visuais de projeto; a página funcional atual mantém o personagem construído em CSS para evitar quebra de carregamento.
