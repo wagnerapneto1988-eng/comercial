@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Painel Administrativo | WAP Migo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="admin-page">
+  <main class="admin-shell">
+    <section class="admin-card" id="loginCard">
+      <div class="admin-brand">WAP <span>CONSULTORIA DIGITAL</span></div>
+      <h1>Painel administrativo</h1>
+      <p>Entre com o usuário administrativo cadastrado no Supabase.</p>
+
+      <form id="loginForm" class="admin-form">
+        <label>
+          E-mail
+          <input id="adminEmail" type="email" autocomplete="username" required />
+        </label>
+        <label>
+          Senha
+          <input id="adminPassword" type="password" autocomplete="current-password" required />
+        </label>
+        <button class="button button-primary" type="submit" id="loginButton">Entrar</button>
+      </form>
+      <p class="admin-message" id="loginMessage" aria-live="polite"></p>
+    </section>
+
+    <section class="admin-panel hidden" id="adminPanel">
+      <div class="admin-toolbar">
+        <div>
+          <span class="section-kicker">WAP MIGO</span>
+          <h1>Diagnósticos recebidos</h1>
+          <p id="sessionUser"></p>
+        </div>
+        <div class="admin-actions">
+          <button class="button button-secondary" id="refreshButton" type="button">Atualizar</button>
+          <button class="button button-secondary" id="logoutButton" type="button">Sair</button>
+        </div>
+      </div>
+
+      <div class="admin-status" id="adminStatus">Carregando diagnósticos...</div>
+      <div class="diagnostics-grid" id="diagnosticsGrid"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

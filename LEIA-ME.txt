@@ -1,0 +1,31 @@
+WAP CONSULTORIA DIGITAL — BASE MIGO
+
+Arquivos:
+- index.html
+- style.css
+- script.js
+
+Como testar:
+1. Extraia a pasta.
+2. Abra index.html no navegador.
+3. Para editar, abra a pasta inteira no VS Code.
+
+Paleta inicial usada:
+- Azul profundo: #050B1D / #07142E
+- Azul digital: #0F6FFF / #26B7FF
+- Grafite: #111827
+- Verde digital: #19D36B
+- Laranja: #FF8A00
+- Branco: #F7FBFF
+
+Observações:
+- O personagem Migo nesta versão é um placeholder desenhado em CSS.
+- Depois podemos substituir pelo mascote oficial em PNG/WebP sem mudar a estrutura.
+- O botão WhatsApp ainda está sem número. Depois basta substituir o href="https://wa.me/".
+
+PAINEL ADMINISTRATIVO SUPABASE
+------------------------------
+Acesse admin.html.
+O painel usa o usuário administrativo cadastrado no Supabase e lê a tabela public.diagnosticos.
+Configuração pública do projeto: supabase-config.js.
+A Publishable Key pode ser usada no navegador; não use service_role/secret key no frontend.

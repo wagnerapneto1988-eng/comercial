@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WAP Consultoria Digital — experiência interativa com o Migo para descobrir oportunidades para o seu negócio." />
+  <title>WAP Consultoria Digital | Experiência Migo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="#inicio" class="brand" aria-label="WAP Consultoria Digital - Início">
+      <div class="brand-mark">W<span>↗</span></div>
+      <div class="brand-text">
+        <strong>WAP</strong>
+        <small>CONSULTORIA DIGITAL</small>
+      </div>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#inicio">Início</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#como-funciona">Como funciona</a>
+    </nav>
+
+    <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-glow hero-glow-blue"></div>
+      <div class="hero-glow hero-glow-orange"></div>
+
+      <div class="hero-content">
+        <div class="eyebrow">TECNOLOGIA • ESTRATÉGIA • RESULTADOS</div>
+
+        <h1>
+          Venha para uma
+          <span>experiência inesquecível.</span>
+        </h1>
+
+        <p class="hero-text">
+          Converse com o Migo, responda perguntas simples sobre o seu negócio
+          e descubra oportunidades digitais feitas para a sua realidade.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#experiencia">
+            Começar experiência
+          </a>
+          <a class="button button-secondary" href="#solucoes">
+            Conhecer soluções
+          </a>
+        </div>
+
+        <div class="trust-line">
+          <span>✓ simples</span>
+          <span>✓ rápido</span>
+          <span>✓ personalizado</span>
+        </div>
+      </div>
+
+      <div class="migo-stage" aria-label="Área visual do personagem Migo">
+        <div class="speech">
+          <strong>Ei, vem comigo! 👋</strong>
+          <span>Eu vou te ajudar a encontrar o melhor caminho para o seu negócio.</span>
+        </div>
+
+        <div class="migo-card">
+          <div class="migo-head">
+            <div class="hair"></div>
+            <div class="face">
+              <div class="glasses">
+                <span></span><span></span>
+              </div>
+              <div class="smile">⌣</div>
+            </div>
+          </div>
+
+          <div class="migo-body">
+            <div class="hood"></div>
+            <div class="shirt-logo">W↗</div>
+          </div>
+
+          <div class="migo-arm">
+            <div class="hand">☝</div>
+          </div>
+
+          <div class="migo-label">MIGO</div>
+        </div>
+
+        <div class="floating-badge badge-blue">HTML</div>
+        <div class="floating-badge badge-green">JS</div>
+        <div class="floating-badge badge-orange">CSS</div>
+      </div>
+    </section>
+
+    <section class="experience" id="experiencia">
+      <div class="section-heading">
+        <span class="section-kicker">EXPERIÊNCIA INTERATIVA</span>
+        <h2>Descubra seu caminho para o <em>sucesso.</em></h2>
+        <p>
+          Uma conversa guiada que transforma respostas em um diagnóstico
+          objetivo para o seu negócio.
+        </p>
+      </div>
+
+      <div class="diagnostic-card">
+        <div class="progress-top">
+          <div>
+            <small>Diagnóstico Migo</small>
+            <strong id="questionCounter">Pergunta 1 de 5</strong>
+          </div>
+          <span id="progressPercent">20%</span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="question-area">
+          <div class="mini-migo">M</div>
+          <div>
+            <span class="question-label">Migo pergunta:</span>
+            <h3 id="questionText"></h3>
+          </div>
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div class="result hidden" id="result">
+          <span class="result-icon">🚀</span>
+          <div>
+            <small>Seu diagnóstico inicial</small>
+            <h3 id="resultTitle"></h3>
+            <p id="resultText"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="solutions" id="solucoes">
+      <div class="section-heading">
+        <span class="section-kicker">SOLUÇÕES</span>
+        <h2>Tecnologia que faz sentido para <em>você.</em></h2>
+      </div>
+
+      <div class="solution-grid">
+        <article class="solution-card blue">
+          <span class="solution-icon">🖥️</span>
+          <h3>Sites e páginas comerciais</h3>
+          <p>Presença profissional, leve e preparada para gerar contato.</p>
+        </article>
+
+        <article class="solution-card green">
+          <span class="solution-icon">💬</span>
+          <h3>WhatsApp e atendimento</h3>
+          <p>Mais facilidade para conversar, organizar e vender.</p>
+        </article>
+
+        <article class="solution-card orange">
+          <span class="solution-icon">📈</span>
+          <h3>Marketing digital</h3>
+          <p>Estratégias simples para aumentar visibilidade e oportunidades.</p>
+        </article>
+
+        <article class="solution-card blue">
+          <span class="solution-icon">⚙️</span>
+          <h3>Automação e ferramentas</h3>
+          <p>Processos mais rápidos, organizados e inteligentes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="steps" id="como-funciona">
+      <div class="section-heading">
+        <span class="section-kicker">COMO FUNCIONA</span>
+        <h2>Três passos. Um caminho mais <em>claro.</em></h2>
+      </div>
+
+      <div class="step-grid">
+        <article class="step-card">
+          <span>1</span>
+          <h3>Converse com o Migo</h3>
+          <p>Responda perguntas curtas sobre o seu momento.</p>
+        </article>
+        <article class="step-card">
+          <span>2</span>
+          <h3>Receba um diagnóstico</h3>
+          <p>Identificamos os pontos que merecem prioridade.</p>
+        </article>
+        <article class="step-card">
+          <span>3</span>
+          <h3>Escolha a solução</h3>
+          <p>Você recebe uma direção simples para seguir.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div>
+        <span class="section-kicker">PRÓXIMO PASSO</span>
+        <h2>Seu negócio pode começar pequeno e crescer certo.</h2>
+      </div>
+      <a class="button button-whatsapp"
+         href="https://wa.me/"
+         target="_blank"
+         rel="noopener noreferrer">
+         Falar no WhatsApp
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand footer-brand">
+      <div class="brand-mark">W<span>↗</span></div>
+      <div class="brand-text">
+        <strong>WAP</strong>
+        <small>CONSULTORIA DIGITAL</small>
+      </div>
+    </div>
+    <p>Transformar ideias em soluções inovadoras e tecnológicas.</p>
+    <small>© <span id="year"></span> WAP Consultoria Digital.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
