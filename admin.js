@@ -40,6 +40,67 @@
     return String(value);
   }
 
+
+  function firstValue(row, keys) {
+    for (const key of keys) {
+      const value = row?.[key];
+      if (value !== null && value !== undefined && String(value).trim() !== "") {
+        return String(value).trim();
+      }
+    }
+    return "";
+  }
+
+  function normalizeWhatsApp(value) {
+    let number = String(value || "").replace(/\D/g, "");
+    if (!number) return "";
+
+    // Remove zeros de prefixo usados em algumas formas de discagem no Brasil.
+    number = number.replace(/^0+/, "");
+
+    // Números brasileiros salvos apenas com DDD + telefone recebem o código do país.
+    if (!number.startsWith("55") && (number.length === 10 || number.length === 11)) {
+      number = `55${number}`;
+    }
+
+    return number;
+  }
+
+  function buildProposalMessage(row) {
+    const nome = firstValue(row, ["nome", "nome_cliente", "cliente", "responsavel"]);
+    const empresa = firstValue(row, ["empresa", "nome_empresa", "negocio"]);
+
+    const saudacao = nome ? `Olá, ${nome}! Tudo bem?` : "Olá! Tudo bem?";
+    const referencia = empresa ? ` da ${empresa}` : "";
+
+    return `${saudacao}\n\nAnalisamos o diagnóstico${referencia} e preparamos uma proposta com base nas necessidades identificadas.\n\nPodemos conversar sobre as soluções recomendadas para o seu projeto?`;
+  }
+
+  function createWhatsAppButton(row) {
+    const rawPhone = firstValue(row, ["whatsapp", "telefone", "celular", "phone", "telefone_whatsapp"]);
+    const number = normalizeWhatsApp(rawPhone);
+
+    const actions = document.createElement("div");
+    actions.className = "diagnostic-card-actions";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "button button-whatsapp admin-whatsapp-button";
+    button.textContent = number ? "Enviar proposta no WhatsApp" : "WhatsApp não informado";
+    button.disabled = !number;
+
+    if (number) {
+      button.addEventListener("click", () => {
+        const message = buildProposalMessage(row);
+        const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    }
+
+    actions.appendChild(button);
+    return actions;
+  }
+
   function renderDiagnostics(rows) {
     diagnosticsGrid.innerHTML = "";
 
@@ -76,6 +137,7 @@
       });
 
       card.appendChild(meta);
+      card.appendChild(createWhatsAppButton(row));
       diagnosticsGrid.appendChild(card);
     });
   }

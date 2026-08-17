@@ -902,3 +902,8 @@ footer p {
 .diagnostic-field strong { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; opacity: .6; margin-bottom: 7px; }
 .diagnostic-field pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.45; color: inherit; }
 @media (max-width: 700px) { .admin-toolbar { flex-direction: column; } .admin-actions { width: 100%; } .admin-actions .button { flex: 1; } }
+
+.diagnostic-card-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08); }
+.admin-whatsapp-button { border: 0; cursor: pointer; color: #fff; font: inherit; }
+.admin-whatsapp-button:disabled { cursor: not-allowed; opacity: .45; filter: grayscale(.65); box-shadow: none; transform: none; }
+@media (max-width: 700px) { .diagnostic-card-actions { justify-content: stretch; } .admin-whatsapp-button { width: 100%; } }
