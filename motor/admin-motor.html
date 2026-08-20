@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>WAP Motor Comercial | Painel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-motor.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">WAP</span>
+        <div><b>Motor Comercial</b><small>Administração de demos</small></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-section="dashboard">◼ Dashboard</button>
+        <button class="nav-item" data-section="empresas">🏢 Empresas</button>
+        <button class="nav-item" data-section="propostas">📨 Propostas</button>
+        <button class="nav-item" data-section="produtos">🍕 Produtos Demo</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <span id="sessionEmail">Não conectado</span>
+        <button id="logoutBtn" class="ghost small hidden">Sair</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">WAP CONSULTORIA DIGITAL</span>
+          <h1>Motor Comercial</h1>
+          <p>Empresas, propostas e demonstrações personalizadas em um único painel.</p>
+        </div>
+        <div class="top-actions">
+          <button id="refreshBtn" class="ghost hidden">Atualizar</button>
+          <button id="newCompanyBtn" class="primary hidden">+ Nova empresa</button>
+        </div>
+      </header>
+
+      <section id="loginView" class="login-wrap">
+        <article class="login-card">
+          <div class="lock">🔐</div>
+          <span class="eyebrow">ACESSO ADMINISTRATIVO</span>
+          <h2>Entrar no Motor Comercial</h2>
+          <p>Use o mesmo usuário cadastrado no Supabase do projeto WAP Migo.</p>
+          <form id="loginForm">
+            <label>E-mail<input id="loginEmail" type="email" autocomplete="username" required></label>
+            <label>Senha<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+            <button class="primary full" type="submit">ENTRAR</button>
+          </form>
+          <div id="loginMessage" class="message"></div>
+        </article>
+      </section>
+
+      <section id="panelView" class="hidden">
+        <div class="stats-grid">
+          <article class="stat"><span>Empresas</span><strong id="statCompanies">0</strong><small>prospects cadastrados</small></article>
+          <article class="stat"><span>Propostas</span><strong id="statProposals">0</strong><small>registros comerciais</small></article>
+          <article class="stat"><span>Não enviados</span><strong id="statPending">0</strong><small>prontos para contato</small></article>
+          <article class="stat"><span>Produtos demo</span><strong id="statProducts">0</strong><small>itens cadastrados</small></article>
+        </div>
+
+        <section class="panel-card">
+          <div class="panel-head">
+            <div><span class="eyebrow">OPERAÇÃO COMERCIAL</span><h2>Empresas e demos</h2></div>
+            <input id="searchInput" class="search" placeholder="Buscar empresa, cidade ou segmento">
+          </div>
+          <div id="companiesList" class="company-list"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="companyDialog">
+    <form id="companyForm" method="dialog" class="dialog-card">
+      <div class="dialog-head">
+        <div><span class="eyebrow">CADASTRO</span><h2>Nova empresa</h2></div>
+        <button type="button" id="closeDialog" class="icon-btn">✕</button>
+      </div>
+      <div class="form-grid">
+        <label>Nome<input name="nome" required></label>
+        <label>Slug<input name="slug" placeholder="ex: pizza-roma" required></label>
+        <label>Segmento<input name="segmento" value="pizzaria"></label>
+        <label>Cidade<input name="cidade"></label>
+        <label>Estado<input name="estado" value="SP"></label>
+        <label>WhatsApp<input name="whatsapp" placeholder="5511999999999"></label>
+        <label class="wide">Instagram<input name="instagram_url" placeholder="https://instagram.com/..."></label>
+        <label class="wide">Logo URL<input name="logo_url" placeholder="https://..."></label>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="cancelDialog" class="ghost">Cancelar</button>
+        <button type="submit" class="primary">Salvar empresa</button>
+      </div>
+      <div id="formMessage" class="message"></div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin-motor.js"></script>
+</body>
+</html>
