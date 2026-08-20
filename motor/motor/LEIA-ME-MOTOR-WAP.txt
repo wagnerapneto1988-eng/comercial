@@ -1,0 +1,24 @@
+WAP MIGO — MOTOR DINÂMICO DE DEMOS
+
+1) O site agora lê o cliente pela URL:
+   index.html?cliente=bella-massa-demo
+
+2) O Project URL já está configurado em config.js:
+   https://fqmjfhgxapssqrpxzfnw.supabase.co
+
+3) Falta apenas colar em config.js a chave ANON/PUBLISHABLE pública do projeto.
+   Nunca use a chave service_role no navegador.
+
+4) O site consulta:
+   - empresas_demo (pelo slug)
+   - produtos_demo (pelo empresa_id)
+
+5) Se o Supabase ainda não estiver configurado, o site abre com dados locais de fallback.
+
+6) Para segurança, execute SQL_SEGURANCA_DEMO.sql no Supabase antes de publicar.
+
+7) Para outra pizzaria, basta cadastrar outro slug no banco e abrir:
+   index.html?cliente=novo-slug
+
+8) O checkout real só abre WhatsApp quando o campo whatsapp da empresa estiver preenchido.
+   Sem número, a demo exibe aviso de ambiente demonstrativo.
