@@ -1,0 +1,37 @@
+BELLA MASSA PIZZARIA — V2 CUSTOMIZADA
+
+Arquivos:
+- index.html
+- style.css
+- script.js
+- assets/
+
+WhatsApp configurado:
+(11) 9 8855-5913
+Link técnico: https://wa.me/5511988555913
+
+COMO PUBLICAR NO RENDER
+1. Suba todos os arquivos deste ZIP para o repositório GitHub.
+2. No Render, use Static Site.
+3. Branch: main
+4. Root Directory: vazio
+5. Build Command: echo "Site pronto"
+6. Publish Directory: .
+7. Deploy.
+
+RECURSOS INCLUÍDOS
+- Visual moderno escuro com vermelho, laranja e verde.
+- Pizza real em destaque com efeito de fumaça.
+- Ilustração de delivery.
+- Logo Bella Massa.
+- Cardápio responsivo.
+- Filtros de categorias.
+- Carrinho com quantidades.
+- Entrega ou retirada.
+- Pagamento.
+- Observações.
+- Finalização do pedido pelo WhatsApp.
+
+OBSERVAÇÃO
+Esta é uma pizzaria demonstrativa. Instagram, endereço, preços e sabores podem ser
+alterados facilmente no index.html e script.js.

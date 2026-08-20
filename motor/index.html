@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title id="pageTitle">Delivery | Demonstração WAP</title>
+  <meta id="pageDescription" name="description" content="Demonstração personalizada de delivery digital.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&family=Lobster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="#inicio" class="brand">
+      <img id="brandLogo" src="assets/logo.jpg" alt="Pizzaria">
+    </a>
+    <nav>
+      <a href="#cardapio">Cardápio</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <button class="cart-pill" id="openCart">🛒 <span id="cartCount">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <div class="eyebrow" id="heroEyebrow">🍕 PIZZAS ARTESANAIS • DELIVERY RÁPIDO</div>
+        <h1>FAÇA SEU<br><span>PEDIDO!</span></h1>
+        <p>As melhores pizzas, feitas com ingredientes selecionados e <strong>muito amor.</strong></p>
+        <div class="hero-badges">
+          <span>🍕 Artesanais</span>
+          <span>🌿 Ingredientes frescos</span>
+          <span>🔥 Forno a lenha</span>
+        </div>
+        <a class="cta whatsapp" id="heroWhatsapp" href="#" target="_blank" rel="noopener">
+          <span class="wa-icon">☎</span>
+          <span><b>FAZER PEDIDO AGORA</b><small>Fale com a gente no WhatsApp</small></span>
+        </a>
+      </div>
+      <div class="hero-visual">
+        <img class="hero-pizza" src="assets/hero-pizza.jpg" alt="Pizza artesanal saindo fumacinha">
+        <div class="steam steam1">〰</div>
+        <div class="steam steam2">〰</div>
+        <div class="steam steam3">〰</div>
+        <div class="delivery-ribbon">🛵<b>DELIVERY<br>RÁPIDO</b><small>Quentinha até você!</small></div>
+        <img class="delivery-bike" src="assets/delivery.jpg" alt="Motoboy de delivery">
+      </div>
+    </section>
+
+    <section class="service-strip">
+      <div>⏱️ <span><b>DELIVERY</b><small>RÁPIDO</small></span></div>
+      <div>💬 <span><b>PEDIDOS</b><small>PELO WHATSAPP</small></span></div>
+      <div>💳 <span><b>PAGAMENTO</b><small>FACILITADO</small></span></div>
+    </section>
+
+    <section class="menu-section" id="cardapio">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">CARDÁPIO DIGITAL</span>
+          <h2>NOSSAS PIZZAS</h2>
+        </div>
+        <div class="filters" id="filters"><button class="active" data-filter="todas">Todas</button></div>
+      </div>
+      <div class="pizza-grid" id="pizzaGrid"></div>
+    </section>
+
+    <section class="how" id="como-funciona">
+      <h2>COMO FUNCIONA</h2>
+      <div class="steps">
+        <article><span>1</span><div class="step-icon">🍕</div><h3>ESCOLHA</h3><p>Selecione suas pizzas favoritas.</p></article>
+        <article><span>2</span><div class="step-icon">🛒</div><h3>MONTE O PEDIDO</h3><p>Adicione quantidades e confira o carrinho.</p></article>
+        <article><span>3</span><div class="step-icon">💬</div><h3>CONFIRME</h3><p>Envie o pedido completo pelo WhatsApp.</p></article>
+        <article><span>4</span><div class="step-icon">🛵</div><h3>RECEBA</h3><p>Aguarde sua pizza chegar quentinha.</p></article>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>POR QUE ESCOLHER A <span id="benefitBrand">SUA PIZZARIA?</span></h2>
+      <div class="benefit-grid">
+        <div>🏅<b>QUALIDADE PREMIUM</b></div>
+        <div>🌿<b>INGREDIENTES SELECIONADOS</b></div>
+        <div>🔥<b>FORNO A LENHA</b></div>
+        <div>❤️<b>FEITA COM AMOR</b></div>
+      </div>
+    </section>
+
+    <section class="contact" id="contato">
+      <img id="contactLogo" src="assets/logo.jpg" alt="Pizzaria">
+      <div>
+        <h2>FALE CONOSCO</h2>
+        <p class="phone" id="contactPhone">💬 WhatsApp</p>
+        <p id="contactInstagram">📷 Instagram</p>
+        <p id="contactLocation">📍 Localização</p>
+      </div>
+      <a class="cta whatsapp compact" id="contactWhatsapp" href="#" target="_blank" rel="noopener">CHAMAR NO WHATSAPP</a>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <h2>Seu pedido</h2>
+      <button id="closeCart" aria-label="Fechar carrinho">✕</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="customer-fields">
+      <input id="customerName" placeholder="Seu nome">
+      <select id="orderType">
+        <option value="Entrega">Entrega</option>
+        <option value="Retirada">Retirada no local</option>
+      </select>
+      <input id="address" placeholder="Endereço para entrega">
+      <select id="payment">
+        <option value="Pix">Pix</option>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartão na entrega">Cartão na entrega</option>
+      </select>
+      <textarea id="notes" placeholder="Observações do pedido"></textarea>
+    </div>
+    <div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+    <button class="checkout" id="checkout">FINALIZAR PELO WHATSAPP</button>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <a class="floating-wa" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <footer>
+    <span id="footerBrand">DEMONSTRAÇÃO DELIVERY</span>
+    <span>❤️ A melhor pizza, na sua melhor companhia!</span>
+  </footer>
+  <div id="demoBadge" class="demo-badge">DEMONSTRAÇÃO WAP</div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
