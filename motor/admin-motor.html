@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07111f">
-  <title>WAP Motor Comercial | Painel</title>
+  <title>WAP Motor Comercial V2 | Painel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,44 +13,25 @@
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand">
-        <span class="brand-mark">WAP</span>
-        <div><b>Motor Comercial</b><small>Administração de demos</small></div>
-      </div>
-      <nav>
-        <button class="nav-item active" data-section="dashboard">◼ Dashboard</button>
-        <button class="nav-item" data-section="empresas">🏢 Empresas</button>
-        <button class="nav-item" data-section="propostas">📨 Propostas</button>
-        <button class="nav-item" data-section="produtos">🍕 Produtos Demo</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <span id="sessionEmail">Não conectado</span>
-        <button id="logoutBtn" class="ghost small hidden">Sair</button>
-      </div>
+      <div class="brand"><span class="brand-mark">WAP</span><div><b>Motor Comercial V2</b><small>Demos personalizadas</small></div></div>
+      <nav><button class="nav-item active">◼ Dashboard</button></nav>
+      <div class="sidebar-bottom"><span id="sessionEmail">Não conectado</span><button id="logoutBtn" class="ghost small hidden">Sair</button></div>
     </aside>
 
     <main class="content">
       <header class="topbar">
-        <div>
-          <span class="eyebrow">WAP CONSULTORIA DIGITAL</span>
-          <h1>Motor Comercial</h1>
-          <p>Empresas, propostas e demonstrações personalizadas em um único painel.</p>
-        </div>
-        <div class="top-actions">
-          <button id="refreshBtn" class="ghost hidden">Atualizar</button>
-          <button id="newCompanyBtn" class="primary hidden">+ Nova empresa</button>
-        </div>
+        <div><span class="eyebrow">WAP CONSULTORIA DIGITAL</span><h1>Motor Comercial</h1><p>Empresas, cardápios públicos, demos e abordagem comercial.</p></div>
+        <div class="top-actions"><button id="refreshBtn" class="ghost hidden">Atualizar</button><button id="newCompanyBtn" class="primary hidden">+ Nova empresa</button></div>
       </header>
 
       <section id="loginView" class="login-wrap">
         <article class="login-card">
-          <div class="lock">🔐</div>
-          <span class="eyebrow">ACESSO ADMINISTRATIVO</span>
+          <div class="lock">🔐</div><span class="eyebrow">ACESSO ADMINISTRATIVO</span>
           <h2>Entrar no Motor Comercial</h2>
-          <p>Use o mesmo usuário cadastrado no Supabase do projeto WAP Migo.</p>
+          <p>Use seu usuário do Supabase WAP Migo.</p>
           <form id="loginForm">
-            <label>E-mail<input id="loginEmail" type="email" autocomplete="username" required></label>
-            <label>Senha<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+            <label>E-mail<input id="loginEmail" type="email" required></label>
+            <label>Senha<input id="loginPassword" type="password" required></label>
             <button class="primary full" type="submit">ENTRAR</button>
           </form>
           <div id="loginMessage" class="message"></div>
@@ -78,26 +59,43 @@
 
   <dialog id="companyDialog">
     <form id="companyForm" method="dialog" class="dialog-card">
-      <div class="dialog-head">
-        <div><span class="eyebrow">CADASTRO</span><h2>Nova empresa</h2></div>
-        <button type="button" id="closeDialog" class="icon-btn">✕</button>
-      </div>
+      <div class="dialog-head"><div><span class="eyebrow">EMPRESA</span><h2>Cadastro / personalização</h2></div><button type="button" id="closeDialog" class="icon-btn">✕</button></div>
+      <input type="hidden" name="id">
       <div class="form-grid">
         <label>Nome<input name="nome" required></label>
-        <label>Slug<input name="slug" placeholder="ex: pizza-roma" required></label>
+        <label>Slug<input name="slug" required></label>
         <label>Segmento<input name="segmento" value="pizzaria"></label>
         <label>Cidade<input name="cidade"></label>
         <label>Estado<input name="estado" value="SP"></label>
-        <label>WhatsApp<input name="whatsapp" placeholder="5511999999999"></label>
-        <label class="wide">Instagram<input name="instagram_url" placeholder="https://instagram.com/..."></label>
-        <label class="wide">Logo URL<input name="logo_url" placeholder="https://..."></label>
+        <label>WhatsApp<input name="whatsapp"></label>
+        <label class="wide">Instagram<input name="instagram_url"></label>
+        <label class="wide">Logo URL<input name="logo_url" placeholder="URL da logo pública"></label>
+        <label class="wide">Imagem principal / hero<input name="hero_image_url" placeholder="URL da foto principal"></label>
+        <label class="wide">Imagem delivery<input name="delivery_image_url" placeholder="URL opcional"></label>
+        <label class="wide">Descrição curta<input name="descricao_curta" placeholder="Ex.: tradição, forno a lenha, delivery..."></label>
       </div>
-      <div class="dialog-actions">
-        <button type="button" id="cancelDialog" class="ghost">Cancelar</button>
-        <button type="submit" class="primary">Salvar empresa</button>
-      </div>
+      <div class="dialog-actions"><button type="button" id="cancelDialog" class="ghost">Cancelar</button><button type="submit" class="primary">Salvar</button></div>
       <div id="formMessage" class="message"></div>
     </form>
+  </dialog>
+
+  <dialog id="productsDialog">
+    <div class="dialog-card product-dialog">
+      <div class="dialog-head"><div><span class="eyebrow">CARDÁPIO DA DEMO</span><h2 id="productsTitle">Produtos</h2></div><button type="button" id="closeProducts" class="icon-btn">✕</button></div>
+      <form id="productForm" class="product-form">
+        <input type="hidden" name="empresa_id">
+        <label>Categoria<input name="categoria" placeholder="Pizzas, Bebidas, Combos..."></label>
+        <label>Nome<input name="nome" required></label>
+        <label>Preço<input name="preco" type="number" step="0.01" placeholder="deixe vazio se não for público"></label>
+        <label>Preço é público?<select name="preco_publico"><option value="false">Não</option><option value="true">Sim</option></select></label>
+        <label class="wide">Descrição<input name="descricao"></label>
+        <label class="wide">Imagem URL<input name="imagem_url"></label>
+        <label class="wide">Fonte pública<input name="fonte_url" placeholder="Instagram/site/cardápio onde o item foi encontrado"></label>
+        <button class="primary" type="submit">+ Adicionar item</button>
+      </form>
+      <div id="productMessage" class="message"></div>
+      <div id="productsList" class="products-list"></div>
+    </div>
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

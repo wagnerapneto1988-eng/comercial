@@ -29,7 +29,7 @@
       <div class="hero-copy">
         <div class="eyebrow" id="heroEyebrow">🍕 PIZZAS ARTESANAIS • DELIVERY RÁPIDO</div>
         <h1>FAÇA SEU<br><span>PEDIDO!</span></h1>
-        <p>As melhores pizzas, feitas com ingredientes selecionados e <strong>muito amor.</strong></p>
+        <p id="heroDescription">Uma experiência de delivery personalizada para esta pizzaria.</p>
         <div class="hero-badges">
           <span>🍕 Artesanais</span>
           <span>🌿 Ingredientes frescos</span>
@@ -41,12 +41,12 @@
         </a>
       </div>
       <div class="hero-visual">
-        <img class="hero-pizza" src="assets/hero-pizza.jpg" alt="Pizza artesanal saindo fumacinha">
+        <img id="heroPizza" class="hero-pizza" src="assets/hero-pizza.jpg" alt="Imagem principal da pizzaria">
         <div class="steam steam1">〰</div>
         <div class="steam steam2">〰</div>
         <div class="steam steam3">〰</div>
         <div class="delivery-ribbon">🛵<b>DELIVERY<br>RÁPIDO</b><small>Quentinha até você!</small></div>
-        <img class="delivery-bike" src="assets/delivery.jpg" alt="Motoboy de delivery">
+        <img id="deliveryBike" class="delivery-bike" src="assets/delivery.jpg" alt="Imagem de delivery">
       </div>
     </section>
 
@@ -120,7 +120,9 @@
       <textarea id="notes" placeholder="Observações do pedido"></textarea>
     </div>
     <div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
-    <button class="checkout" id="checkout">FINALIZAR PELO WHATSAPP</button>
+    <button class="continue-order" id="continueOrder">+ CONTINUAR PEDINDO</button>
+    <button class="checkout" id="checkout">SIMULAR FINALIZAÇÃO</button>
+    <p class="demo-warning">Ambiente demonstrativo — nenhum pedido será enviado.</p>
   </aside>
   <div class="overlay" id="overlay"></div>
 

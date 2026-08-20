@@ -97,3 +97,16 @@ footer{display:flex;justify-content:center;gap:35px;flex-wrap:wrap;padding:15px;
 
 /* WAP Migo — complementos do motor de demos */
 .demo-badge{position:fixed;left:16px;bottom:16px;z-index:40;background:#111;color:#fff;border:1px solid rgba(255,255,255,.18);padding:8px 12px;border-radius:999px;font:700 11px/1 Inter,sans-serif;letter-spacing:.08em;box-shadow:0 8px 24px rgba(0,0,0,.28);opacity:.9}
+
+/* WAP MOTOR V2 */
+.continue-order{
+  width:100%;margin-top:12px;padding:13px 16px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;
+  font-weight:800;cursor:pointer
+}
+.demo-warning{font-size:11px;color:#aab6c4;text-align:center;margin:10px 0 0}
+.remove-item{
+  display:block;margin-top:5px;padding:0;border:0;background:transparent;
+  color:#ff7a7a;font-size:11px;cursor:pointer;text-decoration:underline
+}
+.public-price{display:block;color:#8ddf9b;font-size:10px;margin-top:2px}
