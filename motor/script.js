@@ -8,11 +8,11 @@ let pizzas = [];
 let cart = [];
 
 const fallbackPizzas = [
-  {id:1,nome:"Mussarela",categoria:"Clássicas",descricao:"Mussarela e orégano.",preco:39.90,imagem_url:"assets/mussarela.jpg",preco_publico:false},
-  {id:2,nome:"Calabresa",categoria:"Clássicas",descricao:"Calabresa, cebola e orégano.",preco:41.90,imagem_url:"assets/calabresa.jpg",preco_publico:false},
-  {id:3,nome:"Portuguesa",categoria:"Especiais",descricao:"Presunto, ovos, cebola e azeitonas.",preco:42.90,imagem_url:"assets/portuguesa.jpg",preco_publico:false},
-  {id:4,nome:"Frango com Catupiry",categoria:"Especiais",descricao:"Frango desfiado com catupiry.",preco:45.90,imagem_url:"assets/frango.jpg",preco_publico:false},
-  {id:5,nome:"Chocolate",categoria:"Doces",descricao:"Chocolate ao leite.",preco:34.90,imagem_url:"assets/chocolate.jpg",preco_publico:false}
+  {id:1,nome:"Mussarela",categoria:"Clássicas",descricao:"Mussarela e orégano.",preco:39.90,imagem_url:"assets/produto_02_mussarela.jpg",preco_publico:false},
+  {id:2,nome:"Calabresa",categoria:"Clássicas",descricao:"Calabresa, cebola e orégano.",preco:41.90,imagem_url:"assets/produto_01_calabresa.jpg",preco_publico:false},
+  {id:3,nome:"Portuguesa",categoria:"Especiais",descricao:"Presunto, ovos, cebola e azeitonas.",preco:42.90,imagem_url:"assets/produto_03_portuguesa.jpg",preco_publico:false},
+  {id:4,nome:"Frango com Catupiry",categoria:"Especiais",descricao:"Frango desfiado com catupiry.",preco:45.90,imagem_url:"assets/produto_04_frango.jpg",preco_publico:false},
+  {id:5,nome:"Chocolate",categoria:"Doces",descricao:"Chocolate ao leite.",preco:34.90,imagem_url:"assets/produto_06_chocolate.jpg",preco_publico:false}
 ];
 
 const money = v => Number(v || 0).toLocaleString("pt-BR",{
@@ -30,15 +30,14 @@ const slugify = v => String(v || "")
 function imageFallback(nome){
   const n = slugify(nome);
 
-  if(n.includes("calabresa")) return "assets/calabresa.jpg";
-  if(n.includes("mussarela") || n.includes("mucarela")) return "assets/mussarela.jpg";
-  if(n.includes("portuguesa")) return "assets/portuguesa.jpg";
-  if(n.includes("frango")) return "assets/frango.jpg";
-  if(n.includes("lombo")) return "assets/lombo.jpg";
-  if(n.includes("bacon")) return "assets/bacon.jpg";
-  if(n.includes("chocolate") || n.includes("doce")) return "assets/chocolate.jpg";
+  if(n.includes("calabresa")) return "assets/produto_01_calabresa.jpg";
+  if(n.includes("mussarela") || n.includes("mucarela")) return "assets/produto_02_mussarela.jpg";
+  if(n.includes("portuguesa")) return "assets/produto_03_portuguesa.jpg";
+  if(n.includes("frango")) return "assets/produto_04_frango.jpg";
+  if(n.includes("bacon")) return "assets/produto_05_bacon.jpg";
+  if(n.includes("chocolate") || n.includes("doce")) return "assets/produto_06_chocolate.jpg";
 
-  return "assets/hero-pizza.jpg";
+  return "assets/pizza_hero_01.jpg";
 }
 
 function instagramHandle(url){
@@ -98,28 +97,28 @@ function applyEmpresa(e){
     e.descricao_curta ||
     `Uma experiência de delivery personalizada para ${nome}.`;
 
-  const logo = e.logo_url || "assets/logo.jpg";
+  const logo = e.logo_url || "assets/pizza_hero_01.jpg";
 
   const brandLogo = document.querySelector("#brandLogo");
   const contactLogo = document.querySelector("#contactLogo");
 
   brandLogo.src = logo;
   brandLogo.alt = nome;
-  safeImage(brandLogo,"assets/logo.jpg");
+  safeImage(brandLogo,"assets/pizza_hero_01.jpg");
 
   contactLogo.src = logo;
   contactLogo.alt = nome;
-  safeImage(contactLogo,"assets/logo.jpg");
+  safeImage(contactLogo,"assets/pizza_hero_01.jpg");
 
   const hero = document.querySelector("#heroPizza");
 
   hero.src =
     e.hero_image_url ||
-    "assets/hero-pizza.jpg";
+    "assets/pizza_hero_01.jpg";
 
   safeImage(
     hero,
-    "assets/hero-pizza.jpg"
+    "assets/pizza_hero_01.jpg"
   );
 
   const delivery =
@@ -127,11 +126,11 @@ function applyEmpresa(e){
 
   delivery.src =
     e.delivery_image_url ||
-    "assets/delivery.jpg";
+    "assets/delivery_01.jpg";
 
   safeImage(
     delivery,
-    "assets/delivery.jpg"
+    "assets/delivery_01.jpg"
   );
 
   if(e.cor_primaria){
@@ -682,13 +681,13 @@ async function boot(){
       estado:"SP",
 
       logo_url:
-        "assets/logo.jpg",
+        "assets/pizza_hero_01.jpg",
 
       hero_image_url:
-        "assets/hero-pizza.jpg",
+        "assets/pizza_hero_01.jpg",
 
       delivery_image_url:
-        "assets/delivery.jpg"
+        "assets/delivery_01.jpg"
     });
 
     pizzas =
