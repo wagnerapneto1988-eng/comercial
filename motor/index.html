@@ -10,81 +10,101 @@
 
   <meta
     name="theme-color"
-    content="#ffffff"
+    content="#101010"
   >
-
-  <title id="pageTitle">
-    Delivery | Demonstração WAP
-  </title>
 
   <meta
     id="pageDescription"
     name="description"
-    content="Demonstração personalizada de delivery digital."
+    content="Demonstração personalizada de experiência digital WAP."
   >
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
+  <title>Experiência Digital | WAP</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
   <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- =========================================
-       CABEÇALHO
-  ========================================== -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- =====================================================
+       TOPO
+       ===================================================== -->
 
   <header class="topbar">
 
-    <a
-      href="#inicio"
-      class="brand"
-      aria-label="Início"
-    >
+    <a href="#inicio"
+       class="brand"
+       aria-label="Voltar ao início">
+
       <img
         id="brandLogo"
-        src="assets/logo.jpg"
-        alt="Logo da pizzaria"
+        src="assets/pizza_hero_01.jpg"
+        alt="Marca do estabelecimento"
       >
+
+      <div class="brand-copy">
+        <span id="brandName">
+          DEMONSTRAÇÃO PERSONALIZADA
+        </span>
+
+        <small>
+          Experiência digital desenvolvida pela WAP
+        </small>
+      </div>
+
     </a>
 
-    <nav>
+    <nav class="desktop-nav">
+      <a href="#diagnostico">
+        Diagnóstico
+      </a>
+
+      <a href="#experiencia">
+        Experiência
+      </a>
+
       <a href="#cardapio">
         Cardápio
       </a>
 
-      <a href="#contato">
-        Contato
+      <a href="#proposta">
+        Proposta
       </a>
     </nav>
 
     <button
-      class="cart-pill"
       id="openCart"
+      class="cart-button"
       type="button"
+      aria-label="Abrir carrinho"
     >
-      <span>Pedido</span>
+      <span class="cart-icon">
+        🛒
+      </span>
 
-      <strong id="cartCount">
+      <span class="cart-label">
+        Carrinho
+      </span>
+
+      <span
+        id="cartCount"
+        class="cart-count"
+      >
         0
-      </strong>
+      </span>
     </button>
 
   </header>
@@ -92,383 +112,598 @@
 
   <main>
 
-    <!-- =========================================
-         HERO PRINCIPAL
-    ========================================== -->
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
 
     <section
-      class="hero"
       id="inicio"
+      class="hero"
     >
 
       <div class="hero-copy">
 
-        <span
-          class="eyebrow"
-          id="heroEyebrow"
-        >
-          DELIVERY DA SUA PIZZARIA
-        </span>
+        <div class="eyebrow">
+          ANÁLISE + DEMONSTRAÇÃO WAP
+        </div>
 
         <h1>
-          Sua pizza favorita.
-          <span>Do seu jeito.</span>
+          Uma experiência digital pensada para
+          <span id="heroBrand">
+            seu estabelecimento
+          </span>.
         </h1>
 
         <p
           id="heroDescription"
+          class="hero-description"
         >
-          Escolha seus sabores,
-          monte seu pedido
-          e finalize em poucos passos.
+          Criamos esta demonstração para mostrar,
+          na prática, como sua presença digital pode
+          facilitar pedidos e valorizar sua marca.
         </p>
+
+        <div class="hero-points">
+
+          <span>
+            ✓ Mais simples para o cliente
+          </span>
+
+          <span>
+            ✓ Mais profissional para a marca
+          </span>
+
+          <span>
+            ✓ Pronto para celular
+          </span>
+
+        </div>
 
         <div class="hero-actions">
 
           <a
-            class="cta primary-cta"
-            href="#cardapio"
+            href="#diagnostico"
+            class="btn btn-primary"
           >
-            Ver cardápio
+            VER O QUE ENCONTRAMOS
           </a>
 
           <a
-            class="cta whatsapp"
-            id="heroWhatsapp"
-            href="#"
-            target="_blank"
-            rel="noopener"
+            href="#cardapio"
+            class="btn btn-secondary"
           >
-            Pedir no WhatsApp
+            TESTAR EXPERIÊNCIA
           </a>
 
         </div>
 
-        <div class="hero-trust">
-
-          <span>
-            ✓ Pedido simples
-          </span>
-
-          <span>
-            ✓ Entrega rápida
-          </span>
-
-          <span>
-            ✓ Pagamento facilitado
-          </span>
-
-        </div>
+        <p class="demo-warning">
+          Demonstração comercial.
+          Nenhum pedido real será enviado.
+        </p>
 
       </div>
 
 
       <div class="hero-visual">
 
-        <div class="hero-image-wrap">
+        <div class="hero-card">
+
+          <span class="hero-badge">
+            EXPERIÊNCIA PERSONALIZADA
+          </span>
 
           <img
             id="heroPizza"
-            class="hero-pizza"
-            src="assets/hero-pizza.jpg"
-            alt="Pizza em destaque"
+            src="assets/pizza_hero_01.jpg"
+            alt="Produto em destaque"
           >
 
           <div class="hero-floating-card">
 
             <span>
-              🍕
+              Experiência móvel
             </span>
 
-            <div>
-              <small>
-                Peça direto
-              </small>
-
-              <strong>
-                Sem complicação
-              </strong>
-            </div>
+            <strong>
+              simples e direta
+            </strong>
 
           </div>
 
         </div>
-
-        <img
-          id="deliveryBike"
-          class="delivery-bike"
-          src="assets/delivery.jpg"
-          alt="Delivery da pizzaria"
-        >
 
       </div>
 
     </section>
 
 
-    <!-- =========================================
-         IDENTIDADE / DIFERENCIAIS CURTOS
-    ========================================== -->
+    <!-- =====================================================
+         DIAGNÓSTICO
+         ===================================================== -->
 
-    <section class="brand-highlights">
+    <section
+      id="diagnostico"
+      class="section diagnosis"
+    >
 
-      <article>
+      <div class="section-heading">
 
-        <span class="highlight-icon">
-          🍕
+        <span class="section-kicker">
+          DIAGNÓSTICO PERSONALIZADO
         </span>
 
-        <div>
-          <strong>
-            Feita para você
-          </strong>
+        <h2>
+          Antes de sugerir qualquer coisa,
+          nós olhamos para o que você já construiu.
+        </h2>
 
-          <small>
-            Sabores selecionados
-          </small>
-        </div>
+        <p>
+          A proposta começa pelos pontos positivos
+          e pelas oportunidades mais relevantes
+          para o estabelecimento.
+        </p>
 
-      </article>
-
-
-      <article>
-
-        <span class="highlight-icon">
-          🛵
-        </span>
-
-        <div>
-          <strong>
-            Delivery
-          </strong>
-
-          <small>
-            Pedido rápido e fácil
-          </small>
-        </div>
-
-      </article>
+      </div>
 
 
-      <article>
+      <div class="diagnosis-grid">
 
-        <span class="highlight-icon">
-          💬
-        </span>
+        <article class="analysis-panel positive-panel">
 
-        <div>
-          <strong>
-            Atendimento direto
-          </strong>
+          <div class="analysis-title">
+            <span class="analysis-icon">
+              ✓
+            </span>
 
-          <small>
-            Finalização pelo WhatsApp
-          </small>
-        </div>
+            <div>
+              <small>
+                O QUE JÁ FUNCIONA
+              </small>
 
-      </article>
+              <h3>
+                Qualidades encontradas
+              </h3>
+            </div>
+          </div>
+
+          <div
+            id="qualitiesList"
+            class="analysis-list"
+          >
+          </div>
+
+        </article>
+
+
+        <article class="analysis-panel opportunity-panel">
+
+          <div class="analysis-title">
+            <span class="analysis-icon">
+              ↗
+            </span>
+
+            <div>
+              <small>
+                ONDE PODE AVANÇAR
+              </small>
+
+              <h3>
+                Oportunidades prioritárias
+              </h3>
+            </div>
+          </div>
+
+          <div
+            id="opportunitiesList"
+            class="analysis-list"
+          >
+          </div>
+
+        </article>
+
+      </div>
 
     </section>
 
 
-    <!-- =========================================
-         CARDÁPIO
-    ========================================== -->
+    <!-- =====================================================
+         ARGUMENTO AUTOMÁTICO
+         ===================================================== -->
 
     <section
-      class="menu-section"
-      id="cardapio"
+      id="experiencia"
+      class="section experience-section"
     >
 
-      <div class="section-head">
+      <div class="experience-copy">
 
-        <div>
+        <span class="section-kicker">
+          NOSSA LEITURA
+        </span>
 
-          <span class="section-kicker">
-            ESCOLHA SEUS SABORES
-          </span>
+        <h2 id="proposalHeadline">
+          Seu digital pode trabalhar melhor
+          para transformar interesse em pedido.
+        </h2>
 
-          <h2>
-            Cardápio
-          </h2>
+        <p
+          id="proposalArgument"
+          class="proposal-argument"
+        >
+          A ideia não é substituir o que já funciona,
+          mas criar um caminho mais simples entre
+          descobrir sua marca e fazer um pedido.
+        </p>
 
-          <p class="section-description">
-            Monte seu pedido com os sabores
-            que você mais gosta.
-          </p>
+
+        <div class="benefits-grid">
+
+          <article class="benefit-card">
+            <span>01</span>
+
+            <h3>
+              Menos atrito
+            </h3>
+
+            <p>
+              O cliente encontra informações,
+              produtos e ação principal sem se perder.
+            </p>
+          </article>
+
+
+          <article class="benefit-card">
+            <span>02</span>
+
+            <h3>
+              Mais confiança
+            </h3>
+
+            <p>
+              Marca, produtos e comunicação aparecem
+              de forma consistente e profissional.
+            </p>
+          </article>
+
+
+          <article class="benefit-card">
+            <span>03</span>
+
+            <h3>
+              Mais oportunidade
+            </h3>
+
+            <p>
+              A experiência conduz o visitante
+              naturalmente para o próximo passo.
+            </p>
+          </article>
 
         </div>
 
+      </div>
 
-        <div
-          class="filters"
-          id="filters"
-        >
-          <button
-            class="active"
-            data-filter="todas"
+
+      <div class="experience-image">
+
+        <div class="delivery-frame">
+
+          <img
+            id="deliveryBike"
+            src="assets/delivery_01.jpg"
+            alt="Entrega rápida"
           >
-            Todas
-          </button>
+
+          <div class="delivery-copy">
+
+            <span>
+              EXPERIÊNCIA COMPLETA
+            </span>
+
+            <strong>
+              Do primeiro clique
+              até o pedido.
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CARDÁPIO
+         ===================================================== -->
+
+    <section
+      id="cardapio"
+      class="section menu-section"
+    >
+
+      <div class="section-heading menu-heading">
+
+        <div>
+          <span class="section-kicker">
+            DEMONSTRAÇÃO FUNCIONAL
+          </span>
+
+          <h2>
+            Veja como o cliente poderia pedir.
+          </h2>
+
+          <p>
+            Navegação simples, produtos em destaque
+            e carrinho sem complicação.
+          </p>
         </div>
 
       </div>
 
 
       <div
-        class="pizza-grid"
+        id="filters"
+        class="filters"
+        aria-label="Categorias do cardápio"
+      >
+      </div>
+
+
+      <div
         id="pizzaGrid"
-      ></div>
-
-    </section>
-
-
-    <!-- =========================================
-         CHAMADA COM DELIVERY
-    ========================================== -->
-
-    <section class="delivery-callout">
-
-      <div class="delivery-callout-copy">
-
-        <span class="section-kicker">
-          PEDIU, CHEGOU
-        </span>
-
-        <h2>
-          Seu jantar pode estar
-          a poucos cliques de distância.
-        </h2>
-
-        <p>
-          Escolha os produtos,
-          confira seu pedido
-          e finalize direto pelo WhatsApp.
-        </p>
-
-        <button
-          class="cta primary-cta"
-          type="button"
-          id="openCartSecondary"
-          onclick="document.getElementById('openCart').click()"
-        >
-          Ver meu pedido
-        </button>
-
-      </div>
-
-
-      <div class="delivery-callout-visual">
-
-        <img
-          src="assets/delivery.jpg"
-          alt="Serviço de delivery"
-        >
-
+        class="product-grid"
+      >
       </div>
 
     </section>
 
 
-    <!-- =========================================
-         CONTATO / IDENTIDADE DA EMPRESA
-    ========================================== -->
+    <!-- =====================================================
+         CONVERSÃO
+         ===================================================== -->
 
     <section
-      class="contact"
-      id="contato"
+      class="section conversion-section"
     >
 
-      <div class="contact-brand">
+      <div class="conversion-card">
 
-        <img
-          id="contactLogo"
-          src="assets/logo.jpg"
-          alt="Logo da pizzaria"
+        <div>
+
+          <span class="section-kicker">
+            POR QUE ISSO IMPORTA?
+          </span>
+
+          <h2 id="conversionHeadline">
+            Seu cliente já está no celular.
+            O caminho até o pedido também precisa estar.
+          </h2>
+
+          <p id="conversionText">
+            Uma experiência própria ajuda a organizar
+            produtos, apresentar sua marca e reduzir
+            etapas desnecessárias antes da compra.
+          </p>
+
+        </div>
+
+        <a
+          href="#proposta"
+          class="btn btn-light"
         >
+          VER A PROPOSTA WAP
+        </a>
 
       </div>
 
+    </section>
 
-      <div class="contact-info">
 
-        <span class="section-kicker">
-          FALE COM A GENTE
-        </span>
+    <!-- =====================================================
+         PROPOSTA
+         ===================================================== -->
 
-        <h2
-          id="benefitBrand"
-        >
-          Sua pizzaria
-        </h2>
+    <section
+      id="proposta"
+      class="section proposal-section"
+    >
 
-        <p
-          class="phone"
-          id="contactPhone"
-        >
-          💬 WhatsApp
-        </p>
+      <div class="proposal-card">
 
-        <p
-          id="contactInstagram"
-        >
-          📷 Instagram
-        </p>
+        <div class="proposal-brand">
 
-        <p
-          id="contactLocation"
-        >
-          📍 Localização
-        </p>
+          <img
+            id="contactLogo"
+            src="assets/pizza_hero_01.jpg"
+            alt="Logo do estabelecimento"
+          >
+
+          <div>
+
+            <span>
+              PROPOSTA PERSONALIZADA PARA
+            </span>
+
+            <h2 id="proposalBrand">
+              SEU ESTABELECIMENTO
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="proposal-body">
+
+          <div class="proposal-main">
+
+            <span class="section-kicker">
+              O PRÓXIMO PASSO
+            </span>
+
+            <h3 id="finalPitch">
+              Podemos transformar esta demonstração
+              em uma experiência oficial para sua marca.
+            </h3>
+
+            <p id="finalPitchText">
+              A WAP personaliza identidade,
+              produtos, comunicação e fluxo de pedidos
+              para criar uma experiência alinhada
+              ao seu estabelecimento.
+            </p>
+
+
+            <div class="proposal-features">
+
+              <span>
+                ✓ Identidade personalizada
+              </span>
+
+              <span>
+                ✓ Responsivo para celular
+              </span>
+
+              <span>
+                ✓ Carrinho inteligente
+              </span>
+
+              <span>
+                ✓ Integração com WhatsApp
+              </span>
+
+              <span>
+                ✓ Hospedagem e publicação
+              </span>
+
+              <span>
+                ✓ Suporte na implantação
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <aside class="contact-box">
+
+            <span class="contact-label">
+              ESTABELECIMENTO
+            </span>
+
+            <strong id="footerBrand">
+              DEMONSTRAÇÃO
+            </strong>
+
+            <p id="contactLocation">
+              📍 Localização
+            </p>
+
+            <p id="contactInstagram">
+              📷 Instagram
+            </p>
+
+            <p id="contactPhone">
+              💬 WhatsApp
+            </p>
+
+            <a
+              href="#"
+              id="contactWhatsapp"
+              class="btn btn-primary btn-full"
+            >
+              QUERO CONVERSAR SOBRE ESTE PROJETO
+            </a>
+
+            <small>
+              Esta página é uma demonstração comercial WAP.
+            </small>
+
+          </aside>
+
+        </div>
 
       </div>
-
-
-      <a
-        class="cta whatsapp compact"
-        id="contactWhatsapp"
-        href="#"
-        target="_blank"
-        rel="noopener"
-      >
-        Chamar no WhatsApp
-      </a>
 
     </section>
 
   </main>
 
 
-  <!-- =========================================
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer class="footer">
+
+    <div>
+      <strong>
+        WAP Consultoria Digital
+      </strong>
+
+      <span>
+        Estratégia • Experiência • Tecnologia
+      </span>
+    </div>
+
+    <span>
+      Demonstração comercial personalizada
+    </span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       CTA FLUTUANTE
+       ===================================================== -->
+
+  <a
+    href="#"
+    id="floatingWhatsapp"
+    class="floating-cta"
+    aria-label="Conversar sobre esta demonstração"
+  >
+    <span>
+      💬
+    </span>
+
+    <strong>
+      Gostou da ideia?
+    </strong>
+  </a>
+
+
+  <!-- =====================================================
        CARRINHO
-  ========================================== -->
+       ===================================================== -->
 
   <aside
-    class="cart-drawer"
     id="cartDrawer"
+    class="cart-drawer"
     aria-hidden="true"
   >
 
     <div class="cart-header">
 
       <div>
-
-        <small>
-          SEU PEDIDO
-        </small>
+        <span>
+          SUA EXPERIÊNCIA
+        </span>
 
         <h2>
           Carrinho
         </h2>
-
       </div>
 
       <button
         id="closeCart"
-        aria-label="Fechar carrinho"
         type="button"
+        aria-label="Fechar carrinho"
       >
-        ✕
+        ×
       </button>
 
     </div>
@@ -477,192 +712,78 @@
     <div
       id="cartItems"
       class="cart-items"
-    ></div>
-
-
-    <div class="customer-fields">
-
-      <label>
-        Nome
-
-        <input
-          id="customerName"
-          placeholder="Como podemos te chamar?"
-        >
-      </label>
-
-
-      <label>
-        Tipo do pedido
-
-        <select id="orderType">
-
-          <option value="Entrega">
-            Entrega
-          </option>
-
-          <option value="Retirada">
-            Retirada no local
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-        Endereço
-
-        <input
-          id="address"
-          placeholder="Endereço para entrega"
-        >
-      </label>
-
-
-      <label>
-        Pagamento
-
-        <select id="payment">
-
-          <option value="Pix">
-            Pix
-          </option>
-
-          <option value="Dinheiro">
-            Dinheiro
-          </option>
-
-          <option value="Cartão na entrega">
-            Cartão na entrega
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-        Observações
-
-        <textarea
-          id="notes"
-          placeholder="Ex.: sem cebola, troco para R$ 100..."
-        ></textarea>
-      </label>
-
+    >
     </div>
 
 
-    <div class="cart-total">
+    <div class="checkout-box">
 
-      <span>
-        Total
-      </span>
+      <label for="orderType">
+        Como prefere receber?
+      </label>
 
-      <strong id="cartTotal">
-        R$ 0,00
-      </strong>
+      <select id="orderType">
+        <option value="Entrega">
+          Entrega
+        </option>
+
+        <option value="Retirada">
+          Retirada
+        </option>
+      </select>
+
+
+      <div id="address">
+
+        <label for="addressInput">
+          Endereço
+        </label>
+
+        <input
+          id="addressInput"
+          type="text"
+          placeholder="Digite seu endereço"
+        >
+
+      </div>
+
+
+      <div class="cart-total">
+
+        <span>
+          Total demonstrativo
+        </span>
+
+        <strong id="cartTotal">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+
+      <button
+        id="checkout"
+        class="btn btn-primary btn-full"
+        type="button"
+      >
+        SIMULAR PEDIDO
+      </button>
+
+
+      <button
+        id="continueOrder"
+        class="continue-button"
+        type="button"
+      >
+        continuar escolhendo
+      </button>
 
     </div>
-
-
-    <button
-      class="continue-order"
-      id="continueOrder"
-      type="button"
-    >
-      Continuar escolhendo
-    </button>
-
-
-    <button
-      class="checkout"
-      id="checkout"
-      type="button"
-    >
-      Simular finalização
-    </button>
-
-
-    <p class="demo-warning">
-      Ambiente demonstrativo —
-      nenhum pedido será enviado.
-    </p>
 
   </aside>
 
 
-  <div
-    class="overlay"
-    id="overlay"
-  ></div>
-
-
-  <!-- =========================================
-       WHATSAPP FLUTUANTE
-  ========================================== -->
-
-  <a
-    class="floating-wa"
-    id="floatingWhatsapp"
-    href="#"
-    target="_blank"
-    rel="noopener"
-    aria-label="WhatsApp"
-  >
-    💬
-  </a>
-
-
-  <!-- =========================================
-       RODAPÉ
-  ========================================== -->
-
-  <footer>
-
-    <div>
-
-      <strong id="footerBrand">
-        DEMONSTRAÇÃO DELIVERY
-      </strong>
-
-      <small>
-        Experiência digital personalizada
-      </small>
-
-    </div>
-
-
-    <div class="footer-credit">
-
-      <span>
-        Demonstração desenvolvida por
-      </span>
-
-      <strong>
-        WAP Consultoria Digital
-      </strong>
-
-    </div>
-
-  </footer>
-
-
-  <div
-    id="demoBadge"
-    class="demo-badge"
-  >
-    DEMONSTRAÇÃO WAP
-  </div>
-
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
   <script src="config.js"></script>
-
   <script src="script.js"></script>
 
 </body>
