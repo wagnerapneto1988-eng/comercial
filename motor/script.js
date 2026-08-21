@@ -1,130 +1,82 @@
 /* =========================================================
    WAP MOTOR COMERCIAL
-   DELIVERY EXPERIENCE V3.1
-   PROPOSTA AUTOMÁTICA PERSONALIZADA
+   IMPACTO V04
+   script.js
 
-   URL:
-   index.html?cliente=slug
-
-   Banco:
-   empresas_demo
-   produtos_demo
+   OBJETIVO:
+   - carregar empresa por ?cliente=slug
+   - manter template visual fixo
+   - alterar principalmente logo, nome, contatos e produtos
+   - mostrar 2 sinais positivos + 3 oportunidades
+   - carrinho com CONTINUAR PEDINDO / FINALIZAR
+   - finalizar com WhatsApp, pagamento ilustrativo,
+     voltar ao início, consultoria e diagnóstico
    ========================================================= */
 
 "use strict";
 
 
 /* =========================================================
-   ESTADO GLOBAL
+   ESTADO
    ========================================================= */
 
 let EMPRESA = null;
-
-let pizzas = [];
-
-let cart = [];
-
-let activeFilter = "todas";
-
-let lastFocusedElement = null;
+let produtos = [];
+let carrinho = [];
+let filtroAtivo = "todas";
+let ultimoFoco = null;
 
 
 /* =========================================================
-   PRODUTOS DE FALLBACK
+   FALLBACK DE PRODUTOS
    ========================================================= */
 
-const fallbackPizzas = [
-
+const PRODUTOS_FALLBACK = [
   {
     id: 1,
-
     nome: "Mussarela",
-
     categoria: "Clássicas",
-
-    descricao:
-      "Mussarela derretida e orégano.",
-
+    descricao: "Mussarela derretida e orégano.",
     preco: 39.90,
-
-    imagem_url:
-      "assets/produto_02_mussarela.jpg",
-
+    imagem_url: "assets/produto_02_mussarela.jpg",
     preco_publico: false
   },
-
   {
     id: 2,
-
     nome: "Calabresa",
-
     categoria: "Clássicas",
-
-    descricao:
-      "Calabresa, cebola e orégano.",
-
+    descricao: "Calabresa, cebola e orégano.",
     preco: 41.90,
-
-    imagem_url:
-      "assets/produto_01_calabresa.jpg",
-
+    imagem_url: "assets/produto_01_calabresa.jpg",
     preco_publico: false
   },
-
   {
     id: 3,
-
     nome: "Portuguesa",
-
     categoria: "Especiais",
-
-    descricao:
-      "Presunto, ovos, cebola e azeitonas.",
-
+    descricao: "Presunto, ovos, cebola e azeitonas.",
     preco: 42.90,
-
-    imagem_url:
-      "assets/produto_03_portuguesa.jpg",
-
+    imagem_url: "assets/produto_03_portuguesa.jpg",
     preco_publico: false
   },
-
   {
     id: 4,
-
     nome: "Frango com Catupiry",
-
     categoria: "Especiais",
-
-    descricao:
-      "Frango desfiado com catupiry.",
-
+    descricao: "Frango desfiado com catupiry.",
     preco: 45.90,
-
-    imagem_url:
-      "assets/produto_04_frango.jpg",
-
+    imagem_url: "assets/produto_04_frango.jpg",
     preco_publico: false
   },
-
   {
     id: 5,
-
     nome: "Chocolate",
-
     categoria: "Doces",
-
-    descricao:
-      "Chocolate ao leite.",
-
+    descricao: "Chocolate ao leite.",
     preco: 34.90,
-
-    imagem_url:
-      "assets/produto_06_chocolate.jpg",
-
+    imagem_url: "assets/produto_06_chocolate.jpg",
     preco_publico: false
   }
-
 ];
 
 
@@ -132,264 +84,93 @@ const fallbackPizzas = [
    HELPERS
    ========================================================= */
 
-const $ = (
-  selector,
-  root = document
-) => root.querySelector(selector);
+const $ = (selector, root = document) =>
+  root.querySelector(selector);
 
-
-const $$ = (
-  selector,
-  root = document
-) => [...root.querySelectorAll(selector)];
-
+const $$ = (selector, root = document) =>
+  [...root.querySelectorAll(selector)];
 
 const money = value =>
-  Number(value || 0)
-    .toLocaleString(
-      "pt-BR",
-      {
-        style: "currency",
-        currency: "BRL"
-      }
-    );
+  Number(value || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
 
-
-const slugify = value =>
-  String(value || "")
+function slugify(value) {
+  return String(value || "")
     .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim()
-    .replace(
-      /[^a-z0-9]+/g,
-      "-"
-    )
-    .replace(
-      /(^-|-$)/g,
-      ""
-    );
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
-
-const escapeHtml = value =>
-  String(value ?? "")
+function escapeHtml(value) {
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-
-
-function setText(
-  selector,
-  text
-) {
-
-  const element =
-    $(selector);
-
-  if(element){
-    element.textContent =
-      text;
-  }
-
 }
 
-
-function setAttribute(
-  selector,
-  attribute,
-  value
-) {
-
-  const element =
-    $(selector);
-
-  if(
-    element &&
-    value !== null &&
-    value !== undefined
-  ){
-
-    element.setAttribute(
-      attribute,
-      value
-    );
-
+function setText(selector, text) {
+  const el = $(selector);
+  if (el) {
+    el.textContent = text;
   }
-
 }
 
+function setAttr(selector, attr, value) {
+  const el = $(selector);
 
-function firstValue(
-  ...values
-){
-
-  return values.find(
-    value =>
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-  );
-
+  if (
+    el &&
+    value !== undefined &&
+    value !== null
+  ) {
+    el.setAttribute(attr, value);
+  }
 }
 
-
-/* =========================================================
-   IMAGENS
-   ========================================================= */
-
-function imageFallback(
-  nome
-){
-
-  const normalized =
-    slugify(nome);
-
-  if(
-    normalized.includes(
-      "calabresa"
-    )
-  ){
-
-    return "assets/produto_01_calabresa.jpg";
-
-  }
-
-  if(
-    normalized.includes(
-      "mussarela"
-    ) ||
-    normalized.includes(
-      "mucarela"
-    )
-  ){
-
-    return "assets/produto_02_mussarela.jpg";
-
-  }
-
-  if(
-    normalized.includes(
-      "portuguesa"
-    )
-  ){
-
-    return "assets/produto_03_portuguesa.jpg";
-
-  }
-
-  if(
-    normalized.includes(
-      "frango"
-    )
-  ){
-
-    return "assets/produto_04_frango.jpg";
-
-  }
-
-  if(
-    normalized.includes(
-      "bacon"
-    )
-  ){
-
-    return "assets/produto_05_bacon.jpg";
-
-  }
-
-  if(
-    normalized.includes(
-      "chocolate"
-    ) ||
-    normalized.includes(
-      "doce"
-    )
-  ){
-
-    return "assets/produto_06_chocolate.jpg";
-
-  }
-
-  return "assets/pizza_hero_01.jpg";
-
-}
-
-
-function safeImage(
-  element,
-  fallback
-){
-
-  if(!element){
-    return;
-  }
+function safeImage(element, fallback) {
+  if (!element) return;
 
   element.addEventListener(
     "error",
     () => {
-
-      element.src =
-        fallback;
-
+      element.src = fallback;
     },
-    {
-      once: true
-    }
+    { once: true }
   );
-
 }
 
+function normalizePhone(value) {
+  return String(value || "")
+    .replace(/\D/g, "");
+}
 
-/* =========================================================
-   INSTAGRAM
-   ========================================================= */
-
-function instagramHandle(
-  url
-){
-
-  if(!url){
-
+function instagramHandle(url) {
+  if (!url) {
     return "Instagram não informado";
-
   }
 
-  try{
+  try {
+    const parsed = new URL(url);
 
-    const parsed =
-      new URL(url);
-
-    const handle =
-      parsed.pathname
-        .replace(
-          /\//g,
-          ""
-        );
+    const handle = parsed.pathname
+      .replace(/\//g, "");
 
     return handle
       ? `@${handle}`
       : "Instagram";
-
-  }catch{
-
+  } catch {
     return url;
-
   }
-
 }
 
-
-/* =========================================================
-   MOVIMENTO
-   ========================================================= */
-
-function prefersReducedMotion(){
-
+function prefersReducedMotion() {
   return (
     window
       .matchMedia?.(
@@ -397,953 +178,366 @@ function prefersReducedMotion(){
       )
       .matches || false
   );
-
 }
 
 
 /* =========================================================
-   MOTOR VISUAL
+   FALLBACK DE IMAGEM
    ========================================================= */
 
-const EXPERIENCE_DEFAULTS = {
-
-  brandStyle:
-    "modern",
-
-  primaryColor:
-    "#ff3b30",
-
-  accentColor:
-    "#ffb000",
-
-  visualDensity:
-    "comfortable",
-
-  heroLayout:
-    "split",
-
-  cardStyle:
-    "elevated",
-
-  ctaTone:
-    "direct",
-
-  photoEmphasis:
-    "high",
-
-  audienceProfile:
-    "general",
-
-  accessibilityLevel:
-    "enhanced",
-
-  motionLevel:
-    "subtle"
-
-};
-
-
-function inferExperience(
-  company = {}
-){
-
-  const external =
-    window.WAP_EXPERIENCE || {};
-
-  const audience =
-    firstValue(
-
-      company.audience_profile,
-
-      company.publico,
-
-      external.audienceProfile,
-
-      EXPERIENCE_DEFAULTS
-        .audienceProfile
-
-    );
-
-
-  const accessibilityLevel =
-
-    firstValue(
-
-      external
-        .accessibilityLevel,
-
-      company
-        .accessibility_level,
-
-      String(audience)
-        .toLowerCase()
-        .includes("idos")
-
-        ? "maximum"
-
-        : EXPERIENCE_DEFAULTS
-            .accessibilityLevel
-
-    );
-
-
-  return {
-
-    brandStyle:
-
-      firstValue(
-
-        external.brandStyle,
-
-        company.brand_style,
-
-        EXPERIENCE_DEFAULTS
-          .brandStyle
-
-      ),
-
-
-    primaryColor:
-
-      firstValue(
-
-        external.primaryColor,
-
-        company.cor_primaria,
-
-        EXPERIENCE_DEFAULTS
-          .primaryColor
-
-      ),
-
-
-    accentColor:
-
-      firstValue(
-
-        external.accentColor,
-
-        company.cor_secundaria,
-
-        EXPERIENCE_DEFAULTS
-          .accentColor
-
-      ),
-
-
-    visualDensity:
-
-      firstValue(
-
-        external.visualDensity,
-
-        company.visual_density,
-
-        accessibilityLevel ===
-        "maximum"
-
-          ? "spacious"
-
-          : EXPERIENCE_DEFAULTS
-              .visualDensity
-
-      ),
-
-
-    heroLayout:
-
-      firstValue(
-
-        external.heroLayout,
-
-        company.hero_layout,
-
-        EXPERIENCE_DEFAULTS
-          .heroLayout
-
-      ),
-
-
-    cardStyle:
-
-      firstValue(
-
-        external.cardStyle,
-
-        company.card_style,
-
-        EXPERIENCE_DEFAULTS
-          .cardStyle
-
-      ),
-
-
-    ctaTone:
-
-      firstValue(
-
-        external.ctaTone,
-
-        company.cta_tone,
-
-        EXPERIENCE_DEFAULTS
-          .ctaTone
-
-      ),
-
-
-    photoEmphasis:
-
-      firstValue(
-
-        external.photoEmphasis,
-
-        company.photo_emphasis,
-
-        EXPERIENCE_DEFAULTS
-          .photoEmphasis
-
-      ),
-
-
-    audienceProfile:
-      audience,
-
-
-    accessibilityLevel,
-
-
-    motionLevel:
-
-      prefersReducedMotion()
-
-        ? "off"
-
-        : firstValue(
-
-            external.motionLevel,
-
-            company.motion_level,
-
-            EXPERIENCE_DEFAULTS
-              .motionLevel
-
-          )
-
+function imageFallback(nome) {
+  const normalized = slugify(nome);
+
+  if (normalized.includes("calabresa")) {
+    return "assets/produto_01_calabresa.jpg";
+  }
+
+  if (
+    normalized.includes("mussarela") ||
+    normalized.includes("mucarela")
+  ) {
+    return "assets/produto_02_mussarela.jpg";
+  }
+
+  if (normalized.includes("portuguesa")) {
+    return "assets/produto_03_portuguesa.jpg";
+  }
+
+  if (normalized.includes("frango")) {
+    return "assets/produto_04_frango.jpg";
+  }
+
+  if (normalized.includes("bacon")) {
+    return "assets/produto_05_bacon.jpg";
+  }
+
+  if (
+    normalized.includes("chocolate") ||
+    normalized.includes("doce")
+  ) {
+    return "assets/produto_06_chocolate.jpg";
+  }
+
+  return "assets/pizza_hero_01.jpg";
+}
+
+
+/* =========================================================
+   CONSULTOR MIGO
+   ========================================================= */
+
+function configurarMigo() {
+  const img = $("#migoImage");
+  const fallback = $("#migoFallback");
+
+  if (!img) return;
+
+  const candidatos = [
+    "../assets/migo.png",
+    "../assets/consultor-migo.png",
+    "../assets/consultor_migo.png",
+    "../assets/migo-consultor.png",
+    "assets/migo.png",
+    "assets/consultor-migo.png"
+  ];
+
+  let indice = 0;
+
+  function tentarProxima() {
+    if (indice >= candidatos.length) {
+      img.style.display = "none";
+
+      if (fallback) {
+        fallback.style.display = "grid";
+      }
+
+      return;
+    }
+
+    img.src = candidatos[indice];
+    indice += 1;
+  }
+
+  img.onload = () => {
+    img.style.display = "block";
+
+    if (fallback) {
+      fallback.style.display = "none";
+    }
   };
 
+  img.onerror = tentarProxima;
+
+  tentarProxima();
 }
 
+function fecharIntro() {
+  const intro = $("#migoIntro");
 
-function applyExperience(
-  company = {}
-){
+  if (!intro) return;
 
-  const experience =
-    inferExperience(
-      company
-    );
+  intro.classList.add("hidden");
 
-  const root =
-    document.documentElement;
-
-  const body =
-    document.body;
-
-
-  root.style.setProperty(
-    "--demo-primary",
-    experience.primaryColor
+  document.body.classList.remove(
+    "intro-open"
   );
 
-
-  root.style.setProperty(
-    "--demo-secondary",
-    experience.accentColor
-  );
-
-
-  body.dataset.brandStyle =
-    experience.brandStyle;
-
-
-  body.dataset.visualDensity =
-    experience.visualDensity;
-
-
-  body.dataset.heroLayout =
-    experience.heroLayout;
-
-
-  body.dataset.cardStyle =
-    experience.cardStyle;
-
-
-  body.dataset.ctaTone =
-    experience.ctaTone;
-
-
-  body.dataset.photoEmphasis =
-    experience.photoEmphasis;
-
-
-  body.dataset.audienceProfile =
-    experience.audienceProfile;
-
-
-  body.dataset.accessibilityLevel =
-    experience.accessibilityLevel;
-
-
-  body.dataset.motionLevel =
-    experience.motionLevel;
-
-
-  if(
-    experience
-      .accessibilityLevel ===
-    "maximum"
-  ){
-
-    root.style.setProperty(
-      "--wap-hit-area",
-      "52px"
+  window.setTimeout(() => {
+    intro.setAttribute(
+      "aria-hidden",
+      "true"
     );
-
-    root.style.setProperty(
-      "--wap-readable-size",
-      "1.05rem"
-    );
-
-  }
-
-
-  if(
-    experience.motionLevel ===
-    "off"
-  ){
-
-    body
-      .classList
-      .add(
-        "reduce-motion"
-      );
-
-  }
-
+  }, 350);
 }
 
 
 /* =========================================================
-   MOTOR DE PROPOSTA
+   OBSERVAÇÕES
    ========================================================= */
 
-function detectProfile(
-  company
-){
+function montarSinaisPositivos(empresa) {
+  const positivos = [];
 
-  const text =
-    [
-      company.nome,
-      company.segmento,
-      company.descricao_curta,
-      company.categoria
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-
-
-  if(
-    text.includes("pizza") ||
-    text.includes("pizzaria")
-  ){
-
-    return "pizzaria";
-
-  }
-
-
-  if(
-    text.includes("lanche") ||
-    text.includes("hamburg")
-  ){
-
-    return "lanchonete";
-
-  }
-
-
-  if(
-    text.includes("restaurante")
-  ){
-
-    return "restaurante";
-
-  }
-
-
-  if(
-    text.includes("marmita")
-  ){
-
-    return "marmitaria";
-
-  }
-
-
-  return "delivery";
-
-}
-
-
-/* =========================================================
-   QUALIDADES
-   ========================================================= */
-
-function buildQualities(
-  company
-){
-
-  const qualities =
-    [];
-
-
-  if(
-    company.logo_url
-  ){
-
-    qualities.push({
-
-      title:
-        "Identidade já reconhecível",
-
-      text:
-        "O estabelecimento já possui elementos visuais que podem ser aproveitados para criar uma experiência digital mais consistente."
-
+  if (empresa.logo_url) {
+    positivos.push({
+      titulo:
+        "Identidade visual disponível",
+      texto:
+        "A marca possui elementos visuais que podem ser preservados na experiência digital.",
+      verificado:
+        true
     });
-
   }
 
-
-  if(
-    company.instagram_url
-  ){
-
-    qualities.push({
-
-      title:
+  if (empresa.instagram_url) {
+    positivos.push({
+      titulo:
         "Presença nas redes sociais",
-
-      text:
-        "A marca já possui um canal capaz de gerar descoberta e relacionamento com potenciais clientes."
-
+      texto:
+        "Existe um canal público que ajuda a marca a ser encontrada e reconhecida.",
+      verificado:
+        true
     });
-
   }
 
-
-  if(
-    company.whatsapp
-  ){
-
-    qualities.push({
-
-      title:
-        "Canal direto com o cliente",
-
-      text:
-        "O WhatsApp já permite contato rápido e pode ganhar um fluxo mais organizado para pedidos."
-
+  if (empresa.whatsapp) {
+    positivos.push({
+      titulo:
+        "Canal direto de atendimento",
+      texto:
+        "O estabelecimento já possui um caminho direto de contato com o cliente.",
+      verificado:
+        true
     });
-
   }
 
-
-  if(
-    company.hero_image_url
-  ){
-
-    qualities.push({
-
-      title:
-        "Potencial visual forte",
-
-      text:
-        "Boas imagens de produtos ajudam a transformar atenção em desejo e valorizam a apresentação da marca."
-
-    });
-
-  }
-
-
-  if(
-    company.avaliacao &&
-    Number(
-      company.avaliacao
-    ) >= 4
-  ){
-
-    qualities.push({
-
-      title:
+  if (
+    empresa.avaliacao &&
+    Number(empresa.avaliacao) >= 4
+  ) {
+    positivos.push({
+      titulo:
         "Boa percepção pública",
-
-      text:
-        "A avaliação encontrada indica uma base positiva de confiança que pode ser valorizada na experiência digital."
-
+      texto:
+        "A avaliação disponível indica percepção positiva que pode ser valorizada na apresentação digital.",
+      verificado:
+        true
     });
-
   }
 
+  while (positivos.length < 2) {
+    positivos.push({
+      titulo:
+        positivos.length === 0
+          ? "Produto com forte apelo visual"
+          : "Potencial de comunicação local",
 
-  if(
-    qualities.length <
-    2
-  ){
+      texto:
+        positivos.length === 0
+          ? "O segmento permite destacar produtos de maneira simples e atraente em uma experiência de pedido."
+          : "A proximidade com o público facilita uma comunicação direta e objetiva.",
 
-    qualities.push({
-
-      title:
-        "Produto com apelo imediato",
-
-      text:
-        "O segmento possui forte potencial visual e costuma funcionar muito bem em experiências digitais rápidas e objetivas."
-
+      verificado:
+        false
     });
-
   }
 
-
-  if(
-    qualities.length <
-    2
-  ){
-
-    qualities.push({
-
-      title:
-        "Proximidade com o público",
-
-      text:
-        "O atendimento local permite criar uma comunicação mais direta, simples e próxima do consumidor."
-
-    });
-
-  }
-
-
-  return qualities
-    .slice(
-      0,
-      2
-    );
-
+  return positivos.slice(0, 2);
 }
 
+function montarMelhorias(empresa) {
+  const melhorias = [];
 
-/* =========================================================
-   OPORTUNIDADES
-   ========================================================= */
-
-function buildOpportunities(
-  company
-){
-
-  const opportunities =
-    [];
-
-
-  if(
-    !company.site_url
-  ){
-
-    opportunities.push({
-
-      title:
+  if (!empresa.site_url) {
+    melhorias.push({
+      titulo:
         "Criar um ponto digital próprio",
-
-      text:
-        "Uma página própria reduz a dependência exclusiva de redes sociais e concentra cardápio, marca e chamada para pedido."
-
+      texto:
+        "Uma experiência própria pode concentrar produtos, informações e pedido sem depender apenas das redes sociais.",
+      verificado:
+        true
     });
-
-  }else{
-
-    opportunities.push({
-
-      title:
-        "Simplificar a jornada móvel",
-
-      text:
-        "A experiência pode conduzir o visitante com menos etapas entre visualizar produtos e iniciar um pedido."
-
+  } else {
+    melhorias.push({
+      titulo:
+        "Simplificar a jornada de pedido",
+      texto:
+        "Mesmo com presença digital, sempre existe oportunidade de reduzir etapas entre escolha e finalização.",
+      verificado:
+        false
     });
-
   }
 
-
-  opportunities.push({
-
-    title:
-      "Organizar melhor o cardápio",
-
-    text:
-      "Categorias, fotografias, preços e descrições bem hierarquizados facilitam a escolha e valorizam os produtos."
-
+  melhorias.push({
+    titulo:
+      "Organizar melhor a escolha dos produtos",
+    texto:
+      "Categorias, imagens e preços bem hierarquizados ajudam o cliente a decidir com mais rapidez.",
+    verificado:
+      false
   });
 
-
-  if(
-    company.whatsapp
-  ){
-
-    opportunities.push({
-
-      title:
-        "Transformar WhatsApp em conversão",
-
-      text:
-        "Em vez de depender de uma conversa começando do zero, o cliente pode chegar ao WhatsApp já sabendo o que deseja."
-
+  if (empresa.whatsapp) {
+    melhorias.push({
+      titulo:
+        "Enviar o pedido mais organizado ao WhatsApp",
+      texto:
+        "O cliente pode montar a seleção antes de iniciar a conversa, reduzindo mensagens soltas no atendimento.",
+      verificado:
+        true
     });
-
-  }else{
-
-    opportunities.push({
-
-      title:
-        "Criar um CTA comercial claro",
-
-      text:
-        "O visitante precisa encontrar rapidamente qual é a próxima ação para comprar ou entrar em contato."
-
+  } else {
+    melhorias.push({
+      titulo:
+        "Criar uma ação principal clara",
+      texto:
+        "A experiência precisa mostrar imediatamente como o cliente pode concluir o pedido.",
+      verificado:
+        false
     });
-
   }
 
-
-  opportunities.push({
-
-    title:
-      "Fortalecer a apresentação da marca",
-
-    text:
-      "Uma experiência própria transmite organização e profissionalismo antes mesmo do primeiro atendimento."
-
-  });
-
-
-  return opportunities
-    .slice(
-      0,
-      3
-    );
-
+  return melhorias.slice(0, 3);
 }
 
+function renderObservacoes(empresa) {
+  const positivos =
+    montarSinaisPositivos(empresa);
 
-/* =========================================================
-   TEXTO COMERCIAL
-   ========================================================= */
+  const melhorias =
+    montarMelhorias(empresa);
 
-function buildProposalCopy(
-  company
-){
+  const positiveBox =
+    $("#positiveObservations");
 
-  const name =
-    company.nome ||
-    "seu estabelecimento";
+  const improvementBox =
+    $("#improvementObservations");
 
-
-  const profile =
-    detectProfile(
-      company
-    );
-
-
-  const hasInstagram =
-    Boolean(
-      company.instagram_url
-    );
-
-
-  const hasWhatsapp =
-    Boolean(
-      company.whatsapp
-    );
-
-
-  const hasSite =
-    Boolean(
-      company.site_url
-    );
-
-
-  let headline;
-
-  let argument;
-
-  let conversionHeadline;
-
-  let conversionText;
-
-  let finalPitch;
-
-  let finalPitchText;
-
-
-  if(
-    profile ===
-    "pizzaria"
-  ){
-
-    headline =
-      `${name} já tem o principal: um produto que desperta desejo. A oportunidade é tornar o caminho até o pedido igualmente atraente.`;
-
-
-    argument =
-      "Nossa proposta é organizar a experiência em torno daquilo que o cliente realmente quer fazer: encontrar sabores, comparar opções, montar o pedido e chegar ao atendimento sem esforço.";
-
-
-    conversionHeadline =
-      "A pizza chama atenção. A experiência precisa transformar essa atenção em pedido.";
-
-
-    conversionText =
-      "Fotos fortes, cardápio organizado e uma chamada clara para ação diminuem o caminho entre a vontade de pedir e a decisão de compra.";
-
-  }else{
-
-    headline =
-      `${name} pode transformar sua presença digital em uma jornada mais simples para o cliente.`;
-
-
-    argument =
-      "A proposta une apresentação da marca, organização dos produtos e um caminho mais direto para a ação principal do consumidor.";
-
-
-    conversionHeadline =
-      "Quando a experiência é simples, o cliente entende mais rápido o que escolher e como comprar.";
-
-
-    conversionText =
-      "Nosso objetivo é reduzir distrações e apresentar as informações mais importantes na ordem certa.";
-
-  }
-
-
-  if(
-    hasInstagram &&
-    !hasSite
-  ){
-
-    argument +=
-      " A presença nas redes sociais já ajuda na descoberta; uma experiência própria pode assumir a etapa seguinte e organizar a conversão.";
-
-  }
-
-
-  if(
-    hasWhatsapp
-  ){
-
-    argument +=
-      " O WhatsApp continua importante, mas passa a receber um cliente mais preparado para concluir o atendimento.";
-
-  }
-
-
-  finalPitch =
-    `Podemos transformar esta demonstração em uma experiência oficial para ${name}.`;
-
-
-  finalPitchText =
-    "A WAP cuida da personalização visual, estrutura do cardápio, experiência móvel, carrinho, publicação e integração com o canal comercial do estabelecimento.";
-
-
-  return {
-
-    headline,
-
-    argument,
-
-    conversionHeadline,
-
-    conversionText,
-
-    finalPitch,
-
-    finalPitchText
-
-  };
-
-}
-
-
-/* =========================================================
-   RENDER DO DIAGNÓSTICO
-   ========================================================= */
-
-function renderAnalysis(
-  company
-){
-
-  const qualities =
-    buildQualities(
-      company
-    );
-
-
-  const opportunities =
-    buildOpportunities(
-      company
-    );
-
-
-  const qualityBox =
-    $("#qualitiesList");
-
-
-  const opportunityBox =
-    $("#opportunitiesList");
-
-
-  if(
-    qualityBox
-  ){
-
-    qualityBox.innerHTML =
-      qualities
+  if (positiveBox) {
+    positiveBox.innerHTML =
+      positivos
         .map(
-          (
-            item,
-            index
-          ) => `
-            <div class="analysis-item">
+          (item, index) => `
+            <article class="observation-item">
 
-              <span class="analysis-item-number">
+              <span class="observation-item-index">
                 ${index + 1}
               </span>
 
               <div>
-
                 <strong>
-                  ${escapeHtml(
-                    item.title
-                  )}
+                  ${escapeHtml(item.titulo)}
                 </strong>
 
                 <p>
-                  ${escapeHtml(
-                    item.text
-                  )}
+                  ${escapeHtml(item.texto)}
                 </p>
 
+                ${
+                  item.verificado
+                    ? `
+                      <span class="verified-badge">
+                        ✓ informação pública encontrada
+                      </span>
+                    `
+                    : ""
+                }
               </div>
 
-            </div>
+            </article>
           `
         )
         .join("");
-
   }
 
-
-  if(
-    opportunityBox
-  ){
-
-    opportunityBox.innerHTML =
-      opportunities
+  if (improvementBox) {
+    improvementBox.innerHTML =
+      melhorias
         .map(
-          (
-            item,
-            index
-          ) => `
-            <div class="analysis-item">
+          (item, index) => `
+            <article class="observation-item">
 
-              <span class="analysis-item-number">
+              <span class="observation-item-index">
                 ${index + 1}
               </span>
 
               <div>
-
                 <strong>
-                  ${escapeHtml(
-                    item.title
-                  )}
+                  ${escapeHtml(item.titulo)}
                 </strong>
 
                 <p>
-                  ${escapeHtml(
-                    item.text
-                  )}
+                  ${escapeHtml(item.texto)}
                 </p>
 
+                ${
+                  item.verificado
+                    ? `
+                      <span class="verified-badge">
+                        ✓ informação pública encontrada
+                      </span>
+                    `
+                    : ""
+                }
               </div>
 
-            </div>
+            </article>
           `
         )
         .join("");
-
   }
-
 }
 
 
 /* =========================================================
-   APLICAR EMPRESA
+   EMPRESA
    ========================================================= */
 
-function applyEmpresa(
-  company
-){
+function applyEmpresa(empresa) {
+  EMPRESA = empresa || {};
 
-  EMPRESA =
-    company || {};
-
-
-  const name =
+  const nome =
     EMPRESA.nome ||
     "Pizzaria Demo";
 
-
   document.title =
-    `${name} | Demonstração WAP`;
+    `${nome} | Modelo de Delivery`;
 
-
-  setAttribute(
+  setAttr(
     "#pageDescription",
     "content",
-    `${name} — análise e demonstração digital personalizada pela WAP.`
+    `${nome} — demonstração funcional de delivery criada pela WAP.`
   );
-
 
   setText(
     "#brandName",
-    name.toUpperCase()
+    nome.toUpperCase()
   );
-
-
-  setText(
-    "#heroBrand",
-    name
-  );
-
-
-  setText(
-    "#proposalBrand",
-    name.toUpperCase()
-  );
-
 
   setText(
     "#footerBrand",
-    name.toUpperCase()
+    nome.toUpperCase()
   );
-
 
   setText(
     "#contactPhone",
@@ -1353,7 +547,6 @@ function applyEmpresa(
     }`
   );
 
-
   setText(
     "#contactInstagram",
     `📷 ${
@@ -1362,7 +555,6 @@ function applyEmpresa(
       )
     }`
   );
-
 
   setText(
     "#contactLocation",
@@ -1378,216 +570,70 @@ function applyEmpresa(
     }`
   );
 
-
   setText(
     "#heroDescription",
-
     EMPRESA.descricao_curta ||
-
-    `Criamos esta demonstração para mostrar como ${name} pode oferecer uma experiência digital mais clara, profissional e simples para seus clientes.`
+    `Uma experiência de pedido limpa, visual e funcional preparada para ${nome}.`
   );
-
-
-  const proposal =
-    buildProposalCopy(
-      EMPRESA
-    );
-
-
-  setText(
-    "#proposalHeadline",
-    proposal.headline
-  );
-
-
-  setText(
-    "#proposalArgument",
-    proposal.argument
-  );
-
-
-  setText(
-    "#conversionHeadline",
-    proposal.conversionHeadline
-  );
-
-
-  setText(
-    "#conversionText",
-    proposal.conversionText
-  );
-
-
-  setText(
-    "#finalPitch",
-    proposal.finalPitch
-  );
-
-
-  setText(
-    "#finalPitchText",
-    proposal.finalPitchText
-  );
-
-
-  renderAnalysis(
-    EMPRESA
-  );
-
-
-  /* LOGO */
 
   const logo =
     EMPRESA.logo_url ||
-    "assets/pizza_hero_01.jpg";
-
+    "assets/logo.jpg";
 
   [
     "#brandLogo",
     "#contactLogo"
-  ]
-    .forEach(
-      selector => {
+  ].forEach(selector => {
+    const img = $(selector);
 
-        const image =
-          $(selector);
+    if (!img) return;
 
-        if(
-          !image
-        ){
-          return;
-        }
+    img.src = logo;
+    img.alt = nome;
 
-        image.src =
-          logo;
-
-        image.alt =
-          name;
-
-        safeImage(
-          image,
-          "assets/pizza_hero_01.jpg"
-        );
-
-      }
+    safeImage(
+      img,
+      "assets/pizza_hero_01.jpg"
     );
-
-
-  /* HERO */
+  });
 
   const hero =
     $("#heroPizza");
 
-
-  if(
-    hero
-  ){
-
+  if (hero) {
     hero.src =
-
       EMPRESA.hero_image_url ||
-
       "assets/pizza_hero_01.jpg";
 
-
     hero.alt =
-      `Destaque visual de ${name}`;
-
+      `Produto em destaque de ${nome}`;
 
     safeImage(
       hero,
       "assets/pizza_hero_01.jpg"
     );
-
   }
-
-
-  /* DELIVERY */
 
   const delivery =
     $("#deliveryBike");
 
-
-  if(
-    delivery
-  ){
-
+  if (delivery) {
     delivery.src =
-
       EMPRESA.delivery_image_url ||
-
       "assets/delivery_01.jpg";
 
-
     delivery.alt =
-      `Experiência de entrega de ${name}`;
-
+      `Entrega de ${nome}`;
 
     safeImage(
       delivery,
       "assets/delivery_01.jpg"
     );
-
   }
 
-
-  applyExperience(
+  renderObservacoes(
     EMPRESA
   );
-
-
-  [
-    "#contactWhatsapp",
-    "#floatingWhatsapp"
-  ]
-    .forEach(
-      selector => {
-
-        const element =
-          $(selector);
-
-        if(
-          !element
-        ){
-          return;
-        }
-
-        element.href =
-          "#";
-
-        element.addEventListener(
-          "click",
-          demoCommercial
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   AVISO DA DEMO
-   ========================================================= */
-
-function demoCommercial(
-  event
-){
-
-  if(
-    event
-  ){
-
-    event.preventDefault();
-
-  }
-
-
-  showToast(
-    "Demonstração comercial WAP. O contato real será configurado na versão oficial.",
-    "info"
-  );
-
 }
 
 
@@ -1595,89 +641,54 @@ function demoCommercial(
    FILTROS
    ========================================================= */
 
-function renderFilters(){
+function renderFilters() {
+  const box = $("#filters");
 
-  const box =
-    $("#filters");
+  if (!box) return;
 
-
-  if(
-    !box
-  ){
-
-    return;
-
-  }
-
-
-  const categories =
-    [
-      ...new Set(
-        pizzas
-          .map(
-            product =>
-              product.categoria
-          )
-          .filter(Boolean)
-      )
-    ];
-
+  const categorias = [
+    ...new Set(
+      produtos
+        .map(p => p.categoria)
+        .filter(Boolean)
+    )
+  ];
 
   box.innerHTML =
-
     `
       <button
         type="button"
+        data-filter="todas"
         class="${
-          activeFilter ===
-          "todas"
+          filtroAtivo === "todas"
             ? "active"
             : ""
-        }"
-        data-filter="todas"
-        aria-pressed="${
-          activeFilter ===
-          "todas"
         }"
       >
         Todas
       </button>
     `
-
     +
+    categorias
+      .map(categoria => {
+        const slug =
+          slugify(categoria);
 
-    categories
-      .map(
-        category => {
-
-          const slug =
-            slugify(
-              category
-            );
-
-          return `
-            <button
-              type="button"
-              data-filter="${escapeHtml(slug)}"
-              class="${
-                activeFilter ===
-                slug
-                  ? "active"
-                  : ""
-              }"
-              aria-pressed="${
-                activeFilter ===
-                slug
-              }"
-            >
-              ${escapeHtml(category)}
-            </button>
-          `;
-
-        }
-      )
+        return `
+          <button
+            type="button"
+            data-filter="${escapeHtml(slug)}"
+            class="${
+              filtroAtivo === slug
+                ? "active"
+                : ""
+            }"
+          >
+            ${escapeHtml(categoria)}
+          </button>
+        `;
+      })
       .join("");
-
 }
 
 
@@ -1685,31 +696,18 @@ function renderFilters(){
    PREÇO
    ========================================================= */
 
-function priceLabel(
-  product
-){
-
-  if(
-    product.preco ===
-      null ||
-
-    product.preco ===
-      undefined ||
-
-    Number(
-      product.preco
-    ) <= 0
-  ){
-
+function priceLabel(produto) {
+  if (
+    produto.preco === null ||
+    produto.preco === undefined ||
+    Number(produto.preco) <= 0
+  ) {
     return "Consulte";
-
   }
 
-
   return money(
-    product.preco
+    produto.preco
   );
-
 }
 
 
@@ -1717,54 +715,32 @@ function priceLabel(
    PRODUTOS
    ========================================================= */
 
-function renderPizzas(
-  filter =
-  activeFilter
-){
-
+function renderProdutos(
+  filtro = filtroAtivo
+) {
   const grid =
     $("#pizzaGrid");
 
+  if (!grid) return;
 
-  if(
-    !grid
-  ){
+  filtroAtivo =
+    filtro || "todas";
 
-    return;
-
-  }
-
-
-  activeFilter =
-    filter ||
-    "todas";
-
-
-  const list =
-
-    activeFilter ===
-    "todas"
-
-      ? pizzas
-
-      : pizzas.filter(
-          product =>
+  const lista =
+    filtroAtivo === "todas"
+      ? produtos
+      : produtos.filter(
+          produto =>
             slugify(
-              product.categoria
-            ) ===
-            activeFilter
+              produto.categoria
+            ) === filtroAtivo
         );
-
 
   grid.classList.add(
     "is-updating"
   );
 
-
-  if(
-    !list.length
-  ){
-
+  if (!lista.length) {
     grid.innerHTML =
       `
         <div class="empty">
@@ -1772,139 +748,115 @@ function renderPizzas(
         </div>
       `;
 
-    return;
+    grid.classList.remove(
+      "is-updating"
+    );
 
+    return;
   }
 
-
   grid.innerHTML =
-    list
-      .map(
-        product => {
+    lista
+      .map(produto => {
+        const fallback =
+          imageFallback(
+            produto.nome
+          );
 
-          const fallback =
-            imageFallback(
-              product.nome
-            );
+        return `
+          <article
+            class="card"
+            data-product-id="${produto.id}"
+          >
+
+            <div class="card-media">
+
+              <img
+                src="${escapeHtml(
+                  produto.imagem_url ||
+                  fallback
+                )}"
+                alt="${escapeHtml(
+                  produto.nome
+                )}"
+                loading="lazy"
+                decoding="async"
+                onerror="
+                  this.onerror=null;
+                  this.src='${escapeHtml(fallback)}'
+                "
+              >
+
+            </div>
 
 
-          return `
-            <article
-              class="card"
-              data-product-id="${product.id}"
-            >
+            <div class="card-body">
 
-              <div class="card-media">
+              <div class="card-copy">
 
-                <img
-                  src="${escapeHtml(
-                    product.imagem_url ||
-                    fallback
-                  )}"
+                <h3>
+                  ${escapeHtml(
+                    produto.nome
+                  )}
+                </h3>
 
-                  alt="${escapeHtml(
-                    product.nome
-                  )}"
+                <p>
+                  ${escapeHtml(
+                    produto.descricao ||
+                    "Item do cardápio."
+                  )}
+                </p>
 
-                  loading="lazy"
+              </div>
 
-                  decoding="async"
 
-                  onerror="
-                    this.onerror=null;
-                    this.src='${escapeHtml(
-                      fallback
-                    )}'
-                  "
+              <div class="card-bottom">
+
+                <span class="price">
+
+                  ${escapeHtml(
+                    priceLabel(
+                      produto
+                    )
+                  )}
+
+                  ${
+                    produto.preco_publico
+                      ? `
+                        <small class="public-price">
+                          preço público
+                        </small>
+                      `
+                      : ""
+                  }
+
+                </span>
+
+
+                <button
+                  class="add-btn"
+                  type="button"
+                  data-add-product="${produto.id}"
                 >
+                  + ADICIONAR
+                </button>
 
               </div>
 
+            </div>
 
-              <div class="card-body">
-
-                <div class="card-copy">
-
-                  <h3>
-                    ${escapeHtml(
-                      product.nome
-                    )}
-                  </h3>
-
-                  <p>
-                    ${escapeHtml(
-                      product.descricao ||
-                      "Item do cardápio demonstrativo."
-                    )}
-                  </p>
-
-                </div>
-
-
-                <div class="card-bottom">
-
-                  <span class="price">
-
-                    ${escapeHtml(
-                      priceLabel(
-                        product
-                      )
-                    )}
-
-                    ${
-                      product
-                        .preco_publico
-
-                        ? `
-                          <small class="public-price">
-                            preço público
-                          </small>
-                        `
-
-                        : ""
-                    }
-
-                  </span>
-
-
-                  <button
-                    type="button"
-                    class="add-btn"
-                    data-add-product="${product.id}"
-                    aria-label="Adicionar ${escapeHtml(
-                      product.nome
-                    )} ao carrinho"
-                  >
-                    + ADICIONAR
-                  </button>
-
-                </div>
-
-              </div>
-
-            </article>
-          `;
-
-        }
-      )
+          </article>
+        `;
+      })
       .join("");
 
-
-  requestAnimationFrame(
-    () => {
-
-      grid
-        .classList
-        .remove(
-          "is-updating"
-        );
-
-    }
-  );
-
+  requestAnimationFrame(() => {
+    grid.classList.remove(
+      "is-updating"
+    );
+  });
 
   setupCardInteractions();
-
 }
 
 
@@ -1914,397 +866,229 @@ function renderPizzas(
 
 function addToCart(
   id,
-  sourceButton = null
-){
-
-  const product =
-    pizzas.find(
+  button = null
+) {
+  const produto =
+    produtos.find(
       item =>
         String(item.id) ===
         String(id)
     );
 
+  if (!produto) return;
 
-  if(
-    !product
-  ){
-
-    return;
-
-  }
-
-
-  const found =
-    cart.find(
+  const existente =
+    carrinho.find(
       item =>
         String(item.id) ===
         String(id)
     );
 
-
-  if(
-    found
-  ){
-
-    found.qtd +=
-      1;
-
-  }else{
-
-    cart.push({
-
-      ...product,
-
-      qtd:
-        1
-
+  if (existente) {
+    existente.qtd += 1;
+  } else {
+    carrinho.push({
+      ...produto,
+      qtd: 1
     });
-
   }
-
 
   updateCart();
 
-
   animateAddButton(
-    sourceButton
+    button
   );
-
 
   pulseCartButton();
 
-
   showToast(
-    `${product.nome} adicionado ao carrinho.`,
+    `${produto.nome} adicionado.`,
     "success"
   );
 
-
-  announce(
-    `${product.nome} adicionado ao carrinho.`
-  );
-
-
-  if(
-    window.innerWidth >=
-    980
-  ){
-
-    openCart();
-
-  }
-
+  /* CORREÇÃO:
+     sempre abre o carrinho após adicionar
+     para mostrar:
+     CONTINUAR PEDINDO / FINALIZAR PEDIDO
+  */
+  openCart();
 }
-
 
 function changeQty(
   id,
   delta
-){
-
+) {
   const item =
-    cart.find(
-      product =>
-        String(product.id) ===
+    carrinho.find(
+      produto =>
+        String(produto.id) ===
         String(id)
     );
 
-
-  if(
-    !item
-  ){
-
-    return;
-
-  }
-
+  if (!item) return;
 
   item.qtd +=
     Number(delta);
 
-
-  if(
-    item.qtd <=
-    0
-  ){
-
-    cart =
-      cart.filter(
-        product =>
-          String(product.id) !==
+  if (item.qtd <= 0) {
+    carrinho =
+      carrinho.filter(
+        produto =>
+          String(produto.id) !==
           String(id)
       );
-
   }
 
-
   updateCart();
-
 }
 
-
-function removeItem(
-  id
-){
-
-  const item =
-    cart.find(
-      product =>
-        String(product.id) ===
+function removeItem(id) {
+  const produto =
+    carrinho.find(
+      item =>
+        String(item.id) ===
         String(id)
     );
 
-
-  cart =
-    cart.filter(
-      product =>
-        String(product.id) !==
+  carrinho =
+    carrinho.filter(
+      item =>
+        String(item.id) !==
         String(id)
     );
-
 
   updateCart();
 
-
-  if(
-    item
-  ){
-
+  if (produto) {
     showToast(
-      `${item.nome} removido.`,
+      `${produto.nome} removido.`,
       "info"
     );
-
   }
-
 }
 
-
-/* =========================================================
-   ATUALIZAR CARRINHO
-   ========================================================= */
-
-function updateCart(){
-
-  const count =
-    cart.reduce(
+function totalCarrinho() {
+  return carrinho.reduce(
+    (total, item) =>
+      total +
       (
-        total,
-        item
-      ) =>
-        total +
-        item.qtd,
-      0
-    );
+        Number(item.preco) ||
+        0
+      ) *
+      item.qtd,
+    0
+  );
+}
 
+function quantidadeCarrinho() {
+  return carrinho.reduce(
+    (total, item) =>
+      total +
+      item.qtd,
+    0
+  );
+}
+
+function updateCart() {
+  const count =
+    quantidadeCarrinho();
 
   const total =
-    cart.reduce(
-      (
-        sum,
-        item
-      ) =>
-        sum +
-
-        (
-          Number(
-            item.preco
-          ) || 0
-        ) *
-
-        item.qtd,
-      0
-    );
-
+    totalCarrinho();
 
   setText(
     "#cartCount",
     count
   );
 
+  setText(
+    "#menuCartCount",
+    count
+  );
 
   setText(
     "#cartTotal",
     money(total)
   );
 
-
   const box =
     $("#cartItems");
 
+  if (!box) return;
 
-  if(
-    box
-  ){
+  if (!carrinho.length) {
+    box.innerHTML =
+      `
+        <div class="empty">
+          Seu carrinho está vazio 🍕
+        </div>
+      `;
 
-    if(
-      !cart.length
-    ){
+    return;
+  }
 
-      box.innerHTML =
-        `
-          <div class="empty">
-            Seu carrinho está vazio 🍕
+  box.innerHTML =
+    carrinho
+      .map(item => `
+        <div
+          class="cart-item"
+          data-cart-item="${item.id}"
+        >
+
+          <div class="cart-item-info">
+
+            <b>
+              ${escapeHtml(
+                item.nome
+              )}
+            </b>
+
+            <small>
+              ${escapeHtml(
+                priceLabel(item)
+              )}
+            </small>
+
+            <button
+              type="button"
+              class="remove-item"
+              data-remove-product="${item.id}"
+            >
+              remover
+            </button>
+
           </div>
-        `;
-
-    }else{
-
-      box.innerHTML =
-        cart
-          .map(
-            item => `
-              <div
-                class="cart-item"
-                data-cart-item="${item.id}"
-              >
-
-                <div class="cart-item-info">
-
-                  <b>
-                    ${escapeHtml(
-                      item.nome
-                    )}
-                  </b>
-
-                  <small>
-                    ${escapeHtml(
-                      priceLabel(
-                        item
-                      )
-                    )}
-                  </small>
-
-                  <button
-                    type="button"
-                    class="remove-item"
-                    data-remove-product="${item.id}"
-                  >
-                    remover
-                  </button>
-
-                </div>
 
 
-                <div class="item-controls">
+          <div class="item-controls">
 
-                  <button
-                    type="button"
-                    data-qty-product="${item.id}"
-                    data-qty-delta="-1"
-                    aria-label="Diminuir quantidade"
-                  >
-                    −
-                  </button>
+            <button
+              type="button"
+              data-qty-product="${item.id}"
+              data-qty-delta="-1"
+              aria-label="Diminuir quantidade"
+            >
+              −
+            </button>
 
-                  <b>
-                    ${item.qtd}
-                  </b>
+            <b>
+              ${item.qtd}
+            </b>
 
-                  <button
-                    type="button"
-                    data-qty-product="${item.id}"
-                    data-qty-delta="1"
-                    aria-label="Aumentar quantidade"
-                  >
-                    +
-                  </button>
+            <button
+              type="button"
+              data-qty-product="${item.id}"
+              data-qty-delta="1"
+              aria-label="Aumentar quantidade"
+            >
+              +
+            </button>
 
-                </div>
+          </div>
 
-              </div>
-            `
-          )
-          .join("");
-
-    }
-
-  }
-
-
-  updateContextualCTA();
-
-}
-
-
-/* =========================================================
-   CTA CONTEXTUAL
-   ========================================================= */
-
-function updateContextualCTA(){
-
-  const count =
-    cart.reduce(
-      (
-        sum,
-        item
-      ) =>
-        sum +
-        item.qtd,
-      0
-    );
-
-
-  const total =
-    cart.reduce(
-      (
-        sum,
-        item
-      ) =>
-        sum +
-
-        (
-          Number(
-            item.preco
-          ) || 0
-        ) *
-
-        item.qtd,
-      0
-    );
-
-
-  const checkout =
-    $("#checkout");
-
-
-  if(
-    checkout
-  ){
-
-    checkout.textContent =
-
-      count
-
-        ? `SIMULAR PEDIDO • ${money(total)}`
-
-        : "SIMULAR PEDIDO";
-
-  }
-
-
-  const cartButton =
-    $("#openCart");
-
-
-  if(
-    cartButton
-  ){
-
-    cartButton.setAttribute(
-
-      "aria-label",
-
-      count
-
-        ? `Abrir carrinho com ${count} item${count > 1 ? "s" : ""}`
-
-        : "Abrir carrinho"
-
-    );
-
-  }
-
+        </div>
+      `)
+      .join("");
 }
 
 
@@ -2312,173 +1096,322 @@ function updateContextualCTA(){
    ABRIR / FECHAR CARRINHO
    ========================================================= */
 
-function openCart(){
-
+function openCart() {
   const drawer =
     $("#cartDrawer");
 
   const overlay =
     $("#overlay");
 
-
-  if(
+  if (
     !drawer ||
     !overlay
-  ){
-
+  ) {
     return;
-
   }
 
-
-  lastFocusedElement =
+  ultimoFoco =
     document.activeElement;
 
+  drawer.classList.add(
+    "open"
+  );
 
-  drawer
-    .classList
-    .add(
-      "open"
-    );
+  overlay.classList.add(
+    "show"
+  );
 
-
-  overlay
-    .classList
-    .add(
-      "show"
-    );
-
+  overlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
   drawer.setAttribute(
     "aria-hidden",
     "false"
   );
 
-
-  document.body
-    .classList
-    .add(
-      "cart-open"
-    );
-
-
-  requestAnimationFrame(
-    () => {
-
-      $("#closeCart")
-        ?.focus(
-          {
-            preventScroll:
-              true
-          }
-        );
-
-    }
+  document.body.classList.add(
+    "cart-open"
   );
 
+  requestAnimationFrame(() => {
+    $("#closeCart")
+      ?.focus({
+        preventScroll: true
+      });
+  });
 }
 
-
-function closeCart(){
-
+function closeCart() {
   const drawer =
     $("#cartDrawer");
 
   const overlay =
     $("#overlay");
 
-
-  if(
+  if (
     !drawer ||
     !overlay
-  ){
-
+  ) {
     return;
-
   }
 
+  drawer.classList.remove(
+    "open"
+  );
 
-  drawer
-    .classList
-    .remove(
-      "open"
-    );
+  overlay.classList.remove(
+    "show"
+  );
 
-
-  overlay
-    .classList
-    .remove(
-      "show"
-    );
-
+  overlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
 
   drawer.setAttribute(
     "aria-hidden",
     "true"
   );
 
+  document.body.classList.remove(
+    "cart-open"
+  );
 
-  document.body
-    .classList
-    .remove(
-      "cart-open"
-    );
-
-
-  if(
-    lastFocusedElement
-      ?.focus
-  ){
-
-    lastFocusedElement.focus(
-      {
-        preventScroll:
-          true
-      }
-    );
-
+  if (
+    ultimoFoco &&
+    typeof ultimoFoco.focus ===
+      "function"
+  ) {
+    ultimoFoco.focus({
+      preventScroll: true
+    });
   }
-
 }
 
 
 /* =========================================================
-   CHECKOUT DEMO
+   FINALIZAÇÃO
    ========================================================= */
 
-function simulateCheckout(){
-
-  if(
-    !cart.length
-  ){
-
+function finalizarPedido() {
+  if (!carrinho.length) {
     showToast(
-      "Adicione pelo menos um item para testar o fluxo.",
+      "Adicione pelo menos um produto antes de finalizar.",
       "warning"
     );
 
     return;
-
   }
 
-
-  const type =
-    $("#orderType")
-      ?.value ||
+  const tipo =
+    $("#orderType")?.value ||
     "Entrega";
 
+  const total =
+    totalCarrinho();
 
-  showToast(
-    `Simulação concluída — ${type}. Nenhum pedido real foi enviado.`,
-    "success"
+  const resumo =
+    carrinho
+      .map(
+        item =>
+          `${item.qtd}x ${item.nome}`
+      )
+      .join(" • ");
+
+  setText(
+    "#orderSummaryText",
+    `${tipo} • ${resumo} • Total demonstrativo ${money(total)}`
   );
 
+  closeCart();
 
-  window.setTimeout(
-    closeCart,
-    650
+  abrirFinalizacao();
+}
+
+function abrirFinalizacao() {
+  const modal =
+    $("#orderComplete");
+
+  if (!modal) return;
+
+  modal.classList.add(
+    "show"
   );
 
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "cart-open"
+  );
+}
+
+function fecharFinalizacao() {
+  const modal =
+    $("#orderComplete");
+
+  if (!modal) return;
+
+  modal.classList.remove(
+    "show"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "cart-open"
+  );
+}
+
+
+/* =========================================================
+   WHATSAPP
+   ========================================================= */
+
+function montarMensagemWhatsApp() {
+  const nomeEmpresa =
+    EMPRESA?.nome ||
+    "estabelecimento";
+
+  const tipo =
+    $("#orderType")?.value ||
+    "Entrega";
+
+  const endereco =
+    $("#addressInput")?.value
+      ?.trim() || "";
+
+  const linhas = [
+    `Olá, ${nomeEmpresa}!`,
+    "",
+    "Gostaria de fazer este pedido:"
+  ];
+
+  carrinho.forEach(item => {
+    const subtotal =
+      (
+        Number(item.preco) ||
+        0
+      ) *
+      item.qtd;
+
+    linhas.push(
+      `• ${item.qtd}x ${item.nome} — ${money(subtotal)}`
+    );
+  });
+
+  linhas.push(
+    "",
+    `Tipo: ${tipo}`
+  );
+
+  if (
+    tipo === "Entrega" &&
+    endereco
+  ) {
+    linhas.push(
+      `Endereço: ${endereco}`
+    );
+  }
+
+  linhas.push(
+    `Total: ${money(
+      totalCarrinho()
+    )}`,
+    "",
+    "Pedido gerado pela demonstração de delivery WAP."
+  );
+
+  return linhas.join("\n");
+}
+
+function enviarPedidoWhatsApp() {
+  const telefone =
+    normalizePhone(
+      EMPRESA?.whatsapp
+    );
+
+  if (!telefone) {
+    showToast(
+      "WhatsApp do estabelecimento não informado.",
+      "warning"
+    );
+
+    return;
+  }
+
+  const mensagem =
+    montarMensagemWhatsApp();
+
+  const url =
+    `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
+
+
+/* =========================================================
+   PAGAMENTO ILUSTRATIVO
+   ========================================================= */
+
+function abrirPagamento() {
+  const modal =
+    $("#paymentInfo");
+
+  if (!modal) return;
+
+  modal.classList.add(
+    "show"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+}
+
+function fecharPagamento() {
+  const modal =
+    $("#paymentInfo");
+
+  if (!modal) return;
+
+  modal.classList.remove(
+    "show"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+}
+
+
+/* =========================================================
+   VOLTAR AO INÍCIO
+   ========================================================= */
+
+function voltarAoInicio() {
+  fecharFinalizacao();
+
+  window.scrollTo({
+    top: 0,
+    behavior:
+      prefersReducedMotion()
+        ? "auto"
+        : "smooth"
+  });
 }
 
 
@@ -2486,431 +1419,210 @@ function simulateCheckout(){
    FEEDBACK
    ========================================================= */
 
-function ensureLiveRegion(){
-
-  let live =
-    $("#wapLiveRegion");
-
-
-  if(
-    live
-  ){
-
-    return live;
-
-  }
-
-
-  live =
-    document.createElement(
-      "div"
-    );
-
-
-  live.id =
-    "wapLiveRegion";
-
-
-  live.setAttribute(
-    "aria-live",
-    "polite"
-  );
-
-
-  live.setAttribute(
-    "aria-atomic",
-    "true"
-  );
-
-
-  Object.assign(
-    live.style,
-    {
-
-      position:
-        "fixed",
-
-      width:
-        "1px",
-
-      height:
-        "1px",
-
-      overflow:
-        "hidden",
-
-      clip:
-        "rect(0 0 0 0)"
-
-    }
-  );
-
-
-  document.body
-    .appendChild(
-      live
-    );
-
-
-  return live;
-
-}
-
-
-function announce(
-  message
-){
-
-  const live =
-    ensureLiveRegion();
-
-
-  live.textContent =
-    "";
-
-
-  requestAnimationFrame(
-    () => {
-
-      live.textContent =
-        message;
-
-    }
-  );
-
-}
-
-
 function showToast(
   message,
   type = "success"
-){
-
+) {
   let container =
     $("#wapToastContainer");
 
-
-  if(
-    !container
-  ){
-
+  if (!container) {
     container =
       document.createElement(
         "div"
       );
 
-
     container.id =
       "wapToastContainer";
-
 
     container.className =
       "wap-toast-container";
 
-
-    document.body
-      .appendChild(
-        container
-      );
-
+    document.body.appendChild(
+      container
+    );
   }
-
 
   const toast =
     document.createElement(
       "div"
     );
 
-
   toast.className =
     `wap-toast wap-toast-${type}`;
-
 
   toast.textContent =
     message;
 
+  container.appendChild(
+    toast
+  );
 
-  container
-    .appendChild(
-      toast
+  requestAnimationFrame(() => {
+    toast.classList.add(
+      "show"
+    );
+  });
+
+  window.setTimeout(() => {
+    toast.classList.remove(
+      "show"
     );
 
-
-  requestAnimationFrame(
-    () => {
-
-      toast
-        .classList
-        .add(
-          "show"
-        );
-
-    }
-  );
-
-
-  window.setTimeout(
-    () => {
-
-      toast
-        .classList
-        .remove(
-          "show"
-        );
-
-
-      window.setTimeout(
-        () =>
-          toast.remove(),
-        250
-      );
-
-    },
-    2200
-  );
-
+    window.setTimeout(() => {
+      toast.remove();
+    }, 240);
+  }, 2200);
 }
 
-
-/* =========================================================
-   MICROINTERAÇÕES
-   ========================================================= */
-
-function animateAddButton(
-  button
-){
-
-  if(
-    !button
-  ){
-
-    return;
-
-  }
-
+function animateAddButton(button) {
+  if (!button) return;
 
   const original =
     button.dataset.originalLabel ||
     button.textContent;
 
-
   button.dataset.originalLabel =
     original;
 
-
-  button
-    .classList
-    .add(
-      "added"
-    );
-
+  button.classList.add(
+    "added"
+  );
 
   button.textContent =
     "✓ ADICIONADO";
 
+  window.setTimeout(() => {
+    button.classList.remove(
+      "added"
+    );
 
-  window.setTimeout(
-    () => {
-
-      button
-        .classList
-        .remove(
-          "added"
-        );
-
-
-      button.textContent =
-        original;
-
-    },
-    1100
-  );
-
+    button.textContent =
+      original;
+  }, 1000);
 }
 
-
-function pulseCartButton(){
-
+function pulseCartButton() {
   const button =
     $("#openCart");
 
-
-  if(
+  if (
     !button ||
     prefersReducedMotion()
-  ){
-
+  ) {
     return;
-
   }
 
-
-  button
-    .classList
-    .remove(
-      "cart-pulse"
-    );
-
+  button.classList.remove(
+    "cart-pulse"
+  );
 
   void button.offsetWidth;
 
+  button.classList.add(
+    "cart-pulse"
+  );
 
-  button
-    .classList
-    .add(
+  window.setTimeout(() => {
+    button.classList.remove(
       "cart-pulse"
     );
-
-}
-
-
-function setupCardInteractions(){
-
-  $$(".card")
-    .forEach(
-      card => {
-
-        card.addEventListener(
-          "pointerdown",
-          () => {
-
-            card
-              .classList
-              .add(
-                "pressed"
-              );
-
-          }
-        );
-
-
-        [
-          "pointerup",
-          "pointercancel",
-          "pointerleave"
-        ]
-          .forEach(
-            eventName => {
-
-              card.addEventListener(
-                eventName,
-                () => {
-
-                  card
-                    .classList
-                    .remove(
-                      "pressed"
-                    );
-
-                }
-              );
-
-            }
-          );
-
-      }
-    );
-
+  }, 500);
 }
 
 
 /* =========================================================
-   ANIMAÇÃO NA ROLAGEM
+   MICROINTERAÇÃO DOS CARDS
    ========================================================= */
 
-function setupRevealAnimations(){
-
-  const targets =
-    $$(
-      ".analysis-panel, .benefit-card, .card, .proposal-card, .delivery-frame"
+function setupCardInteractions() {
+  $$(".card").forEach(card => {
+    card.addEventListener(
+      "pointerdown",
+      () => {
+        card.classList.add(
+          "pressed"
+        );
+      }
     );
 
+    [
+      "pointerup",
+      "pointercancel",
+      "pointerleave"
+    ].forEach(eventName => {
+      card.addEventListener(
+        eventName,
+        () => {
+          card.classList.remove(
+            "pressed"
+          );
+        }
+      );
+    });
+  });
+}
 
-  if(
+
+/* =========================================================
+   REVEAL
+   ========================================================= */
+
+function setupRevealAnimations() {
+  const targets =
+    $$(
+      ".observation-group, .card, .delivery-panel, .proposal-card"
+    );
+
+  if (
     prefersReducedMotion() ||
     !(
-      "IntersectionObserver"
-      in window
+      "IntersectionObserver" in
+      window
     )
-  ){
-
-    targets
-      .forEach(
-        element =>
-          element
-            .classList
-            .add(
-              "is-visible"
-            )
+  ) {
+    targets.forEach(el => {
+      el.classList.add(
+        "is-visible"
       );
+    });
 
     return;
-
   }
-
 
   const observer =
     new IntersectionObserver(
       entries => {
-
-        entries.forEach(
-          entry => {
-
-            if(
-              !entry.isIntersecting
-            ){
-
-              return;
-
-            }
-
-
-            entry.target
-              .classList
-              .add(
-                "is-visible"
-              );
-
-
-            observer
-              .unobserve(
-                entry.target
-              );
-
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            return;
           }
-        );
 
+          entry.target
+            .classList
+            .add(
+              "is-visible"
+            );
+
+          observer.unobserve(
+            entry.target
+          );
+        });
       },
       {
-
-        threshold:
-          .12,
-
+        threshold: .10,
         rootMargin:
-          "0px 0px -30px 0px"
-
+          "0px 0px -25px 0px"
       }
     );
 
-
-  targets
-    .forEach(
-      element => {
-
-        element
-          .classList
-          .add(
-            "reveal"
-          );
-
-
-        observer.observe(
-          element
-        );
-
-      }
+  targets.forEach(el => {
+    el.classList.add(
+      "reveal"
     );
 
+    observer.observe(el);
+  });
 }
 
 
@@ -2918,7 +1630,12 @@ function setupRevealAnimations(){
    EVENTOS
    ========================================================= */
 
-function bindEvents(){
+function bindEvents() {
+  $("#seeModelBtn")
+    ?.addEventListener(
+      "click",
+      fecharIntro
+    );
 
   $("#openCart")
     ?.addEventListener(
@@ -2926,6 +1643,17 @@ function bindEvents(){
       openCart
     );
 
+  $("#menuCartShortcut")
+    ?.addEventListener(
+      "click",
+      openCart
+    );
+
+  $("#deliveryCartBtn")
+    ?.addEventListener(
+      "click",
+      openCart
+    );
 
   $("#closeCart")
     ?.addEventListener(
@@ -2933,13 +1661,11 @@ function bindEvents(){
       closeCart
     );
 
-
   $("#overlay")
     ?.addEventListener(
       "click",
       closeCart
     );
-
 
   $("#continueOrder")
     ?.addEventListener(
@@ -2947,328 +1673,263 @@ function bindEvents(){
       closeCart
     );
 
-
   $("#checkout")
     ?.addEventListener(
       "click",
-      simulateCheckout
+      finalizarPedido
     );
 
+  $("#closeOrderComplete")
+    ?.addEventListener(
+      "click",
+      fecharFinalizacao
+    );
+
+  $("#sendWhatsappOrder")
+    ?.addEventListener(
+      "click",
+      enviarPedidoWhatsApp
+    );
+
+  $("#onlinePaymentBtn")
+    ?.addEventListener(
+      "click",
+      abrirPagamento
+    );
+
+  $("#closePaymentInfo")
+    ?.addEventListener(
+      "click",
+      fecharPagamento
+    );
+
+  $("#homeAfterOrder")
+    ?.addEventListener(
+      "click",
+      voltarAoInicio
+    );
+
+  $("#backToTop")
+    ?.addEventListener(
+      "click",
+      voltarAoInicio
+    );
 
   $("#filters")
     ?.addEventListener(
       "click",
       event => {
-
         const button =
           event.target.closest(
-            "button[data-filter]"
+            "[data-filter]"
           );
 
-
-        if(
-          !button
-        ){
-
-          return;
-
-        }
-
+        if (!button) return;
 
         $$("#filters button")
-          .forEach(
-            item => {
-
-              item
-                .classList
-                .remove(
-                  "active"
-                );
-
-
-              item.setAttribute(
-                "aria-pressed",
-                "false"
-              );
-
-            }
+          .forEach(item =>
+            item.classList.remove(
+              "active"
+            )
           );
 
-
-        button
-          .classList
-          .add(
-            "active"
-          );
-
-
-        button.setAttribute(
-          "aria-pressed",
-          "true"
+        button.classList.add(
+          "active"
         );
 
-
-        activeFilter =
+        filtroAtivo =
           button.dataset.filter ||
           "todas";
 
-
-        renderPizzas(
-          activeFilter
+        renderProdutos(
+          filtroAtivo
         );
-
       }
     );
-
 
   $("#pizzaGrid")
     ?.addEventListener(
       "click",
       event => {
-
         const button =
           event.target.closest(
             "[data-add-product]"
           );
 
-
-        if(
-          !button
-        ){
-
-          return;
-
-        }
-
+        if (!button) return;
 
         addToCart(
-          button.dataset
-            .addProduct,
+          button.dataset.addProduct,
           button
         );
-
       }
     );
-
 
   $("#cartItems")
     ?.addEventListener(
       "click",
       event => {
-
         const remove =
           event.target.closest(
             "[data-remove-product]"
           );
 
-
-        if(
-          remove
-        ){
-
+        if (remove) {
           removeItem(
-            remove.dataset
-              .removeProduct
+            remove.dataset.removeProduct
           );
 
           return;
-
         }
 
-
-        const quantity =
+        const qty =
           event.target.closest(
             "[data-qty-product]"
           );
 
-
-        if(
-          quantity
-        ){
-
+        if (qty) {
           changeQty(
-
-            quantity.dataset
-              .qtyProduct,
-
+            qty.dataset.qtyProduct,
             Number(
-              quantity.dataset
-                .qtyDelta ||
+              qty.dataset.qtyDelta ||
               0
             )
-
           );
-
         }
-
       }
     );
-
 
   $("#orderType")
     ?.addEventListener(
       "change",
       event => {
-
         const address =
           $("#address");
 
+        if (!address) return;
 
-        if(
-          !address
-        ){
-
-          return;
-
-        }
-
-
-        const pickup =
+        const retirada =
           event.target.value ===
           "Retirada";
 
-
         address.style.display =
-          pickup
+          retirada
             ? "none"
             : "block";
-
       }
     );
 
-
-  document
-    .addEventListener(
-      "keydown",
-      event => {
-
-        if(
-          event.key ===
-          "Escape"
-        ){
-
-          closeCart();
-
-        }
-
+  document.addEventListener(
+    "keydown",
+    event => {
+      if (event.key !== "Escape") {
+        return;
       }
-    );
 
+      if (
+        $("#paymentInfo")
+          ?.classList
+          .contains("show")
+      ) {
+        fecharPagamento();
+        return;
+      }
+
+      if (
+        $("#orderComplete")
+          ?.classList
+          .contains("show")
+      ) {
+        fecharFinalizacao();
+        return;
+      }
+
+      closeCart();
+    }
+  );
 }
 
 
 /* =========================================================
-   SUPABASE REST
+   SUPABASE
    ========================================================= */
 
 async function supabaseRest(
   path,
   params = {}
-){
-
-  const config =
+) {
+  const cfg =
     window.WAP_CONFIG ||
     {};
 
-
   const url =
-    config.SUPABASE_URL;
-
+    cfg.SUPABASE_URL;
 
   const key =
-    config.SUPABASE_ANON_KEY;
+    cfg.SUPABASE_ANON_KEY;
 
-
-  if(
+  if (
     !url ||
     !key
-  ){
-
+  ) {
     throw new Error(
       "config.js não configurado."
     );
-
   }
-
 
   const query =
     new URLSearchParams(
       params
     );
 
-
   const endpoint =
     `${url}/rest/v1/${path}?${query.toString()}`;
-
 
   const controller =
     new AbortController();
 
-
-  const timeout =
+  const timer =
     window.setTimeout(
       () =>
         controller.abort(),
       10000
     );
 
-
-  try{
-
+  try {
     const response =
       await fetch(
         endpoint,
         {
-
-          headers:
-          {
-
-            apikey:
-              key,
-
+          headers: {
+            apikey: key,
             Authorization:
               `Bearer ${key}`,
-
             Accept:
               "application/json"
-
           },
-
           cache:
             "no-store",
-
           signal:
             controller.signal
-
         }
       );
 
-
-    if(
-      !response.ok
-    ){
-
+    if (!response.ok) {
       const detail =
         await response.text();
-
 
       throw new Error(
         `Supabase REST ${response.status}: ${detail}`
       );
-
     }
-
 
     return response.json();
 
-  }finally{
-
-    clearTimeout(
-      timeout
+  } finally {
+    window.clearTimeout(
+      timer
     );
-
   }
-
 }
 
 
@@ -3277,61 +1938,47 @@ async function supabaseRest(
    ========================================================= */
 
 function normalizeProducts(
-  products = []
-){
+  lista = []
+) {
+  return lista.map(
+    produto => ({
+      id:
+        produto.id,
 
-  return products
-    .map(
-      product => ({
+      nome:
+        produto.nome,
 
-        id:
-          product.id,
+      categoria:
+        produto.categoria ||
+        "Cardápio",
 
-        nome:
-          product.nome,
+      descricao:
+        produto.descricao,
 
-        categoria:
-          product.categoria ||
-          "Cardápio",
+      preco:
+        produto.preco === null ||
+        produto.preco === undefined
+          ? null
+          : Number(
+              produto.preco || 0
+            ),
 
-        descricao:
-          product.descricao,
+      imagem_url:
+        produto.imagem_url ||
+        imageFallback(
+          produto.nome
+        ),
 
-        preco:
+      preco_publico:
+        Boolean(
+          produto.preco_publico
+        ),
 
-          product.preco ===
-            null ||
-
-          product.preco ===
-            undefined
-
-            ? null
-
-            : Number(
-                product.preco ||
-                0
-              ),
-
-        imagem_url:
-
-          product.imagem_url ||
-
-          imageFallback(
-            product.nome
-          ),
-
-        preco_publico:
-          Boolean(
-            product.preco_publico
-          ),
-
-        fonte_url:
-          product.fonte_url ||
-          ""
-
-      })
-    );
-
+      fonte_url:
+        produto.fonte_url ||
+        ""
+    })
+  );
 }
 
 
@@ -3339,10 +1986,8 @@ function normalizeProducts(
    EMPRESA FALLBACK
    ========================================================= */
 
-function fallbackEmpresa(){
-
+function fallbackEmpresa() {
   return {
-
     nome:
       "Pizzaria Demo",
 
@@ -3356,25 +2001,17 @@ function fallbackEmpresa(){
       "SP",
 
     descricao_curta:
-      "Uma demonstração de delivery moderna, rápida e simples de usar.",
+      "Uma experiência de pedido limpa, moderna e fácil de usar.",
 
     logo_url:
-      "assets/pizza_hero_01.jpg",
+      "assets/logo.jpg",
 
     hero_image_url:
       "assets/pizza_hero_01.jpg",
 
     delivery_image_url:
-      "assets/delivery_01.jpg",
-
-    cor_primaria:
-      "#e53935",
-
-    cor_secundaria:
-      "#ffb300"
-
+      "assets/delivery_01.jpg"
   };
-
 }
 
 
@@ -3382,250 +2019,152 @@ function fallbackEmpresa(){
    BOOT
    ========================================================= */
 
-async function boot(){
-
+async function boot() {
   bindEvents();
 
-
-  ensureLiveRegion();
-
+  configurarMigo();
 
   const slug =
-
     new URLSearchParams(
       location.search
-    )
-      .get(
-        "cliente"
-      )
-
+    ).get("cliente")
     ||
-
     "bella-massa-demo";
 
-
   console.info(
-    "WAP Motor Comercial V3.1:",
+    "WAP Impacto V04:",
     slug
   );
 
-
-  document.body
-    .classList
-    .add(
-      "wap-loading"
-    );
-
-
-  try{
-
-    /* EMPRESA */
-
-    const companies =
+  try {
+    const empresas =
       await supabaseRest(
         "empresas_demo",
         {
-
-          select:
-            "*",
-
+          select: "*",
           slug:
             `eq.${slug}`,
-
           limit:
             "1"
-
         }
       );
 
-
-    if(
-      !companies.length
-    ){
-
+    if (!empresas.length) {
       throw new Error(
         `Cliente '${slug}' não encontrado.`
       );
-
     }
 
-
-    const company =
-      companies[0];
-
+    const empresa =
+      empresas[0];
 
     applyEmpresa(
-      company
+      empresa
     );
 
-
-    /* PRODUTOS */
-
-    const products =
+    const produtosBanco =
       await supabaseRest(
         "produtos_demo",
         {
-
-          select:
-            "*",
-
+          select: "*",
           empresa_id:
-            `eq.${company.id}`,
-
+            `eq.${empresa.id}`,
           ativo:
             "eq.true",
-
           order:
             "id.asc"
-
         }
       );
 
-
-    pizzas =
+    produtos =
       normalizeProducts(
-        products ||
+        produtosBanco ||
         []
       );
 
-
-    if(
-      !pizzas.length
-    ){
-
-      pizzas =
-        fallbackPizzas;
-
+    if (!produtos.length) {
+      produtos =
+        PRODUTOS_FALLBACK;
     }
-
 
     renderFilters();
 
-    renderPizzas();
+    renderProdutos();
 
     updateCart();
 
-
-    setTimeout(
+    window.setTimeout(
       setupRevealAnimations,
       80
     );
 
-
     console.info(
-      "WAP Motor carregado",
+      "WAP Impacto V04 carregado",
       {
-
         empresa:
-          company.nome,
-
+          empresa.nome,
         produtos:
-          pizzas.length,
-
-        perfil:
-          detectProfile(
-            company
-          ),
-
-        experiencia:
-          inferExperience(
-            company
-          )
-
+          produtos.length
       }
     );
 
-  }catch(
-    error
-  ){
-
+  } catch (error) {
     console.error(
-      "Falha ao carregar cliente:",
+      "Falha ao carregar empresa:",
       error
     );
 
-
-    const company =
+    const empresa =
       fallbackEmpresa();
 
-
     applyEmpresa(
-      company
+      empresa
     );
 
-
-    pizzas =
-      fallbackPizzas;
-
+    produtos =
+      PRODUTOS_FALLBACK;
 
     renderFilters();
 
-    renderPizzas();
+    renderProdutos();
 
     updateCart();
 
-
-    setTimeout(
+    window.setTimeout(
       setupRevealAnimations,
       80
     );
 
-
     showToast(
-      "Demo carregada em modo local.",
+      "Demonstração carregada em modo local.",
       "info"
     );
-
-  }finally{
-
-    document.body
-      .classList
-      .remove(
-        "wap-loading"
-      );
-
-
-    document.body
-      .classList
-      .add(
-        "wap-ready"
-      );
-
   }
-
 }
 
 
 /* =========================================================
-   COMPATIBILIDADE COM HTML ANTIGO
+   COMPATIBILIDADE
    ========================================================= */
 
 window.addToCart =
   addToCart;
 
-
 window.changeQty =
   changeQty;
-
 
 window.removeItem =
   removeItem;
 
-
 window.openCart =
   openCart;
-
 
 window.closeCart =
   closeCart;
 
 
-window.demoOnly =
-  demoCommercial;
-
-
 /* =========================================================
-   START
+   INICIAR
    ========================================================= */
 
 boot();
