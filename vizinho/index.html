@@ -1,1 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Diagnóstico — Graphic Novel Interativa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Diagnóstico do Projeto</span>
+      <h1>Graphic Novel Interativa</h1>
+      <p>Questionário baseado no universo de Parlapoeta, Dra. Ali / Ella Ali e Pacacetômetro.</p>
+    </div>
+    <a class="admin-link" href="painel.html">Painel</a>
+  </header>
 
+  <section class="progress-wrap">
+    <div class="progress-meta"><span id="stepLabel">Etapa 1 de 10</span><span id="progressText">10%</span></div>
+    <div class="progress"><div id="progressBar"></div></div>
+  </section>
+
+  <form id="diagnosticForm">
+    <section class="step active" data-title="Visão do projeto">
+      <h2>1. Visão do projeto</h2>
+      <label>Nome do responsável<input name="responsavel" required placeholder="Nome de quem está respondendo"></label>
+      <label>WhatsApp ou contato<input name="contato" placeholder="Opcional"></label>
+      <label>Nome definitivo do projeto<input name="nomeProjeto" required placeholder="Ex.: Parlapoeta & Ella Ali"></label>
+      <label>Em uma frase, qual é a ideia central da obra?<textarea name="ideiaCentral" required></textarea></label>
+      <label>Em que estágio o projeto está?
+        <select name="estagio" required>
+          <option value="">Selecione</option>
+          <option>Roteiro em desenvolvimento</option>
+          <option>Roteiro concluído</option>
+          <option>Arte em desenvolvimento</option>
+          <option>Parte da graphic novel pronta</option>
+          <option>Obra concluída</option>
+        </select>
+      </label>
+      <label>Quantas páginas, cenas ou capítulos já existem?<input name="quantidade"></label>
+    </section>
+
+    <section class="step" data-title="Objetivo">
+      <h2>2. Objetivo</h2>
+      <label>Qual primeira versão você quer construir?
+        <select name="primeiraVersao" required>
+          <option value="">Selecione</option>
+          <option>Graphic novel digital navegável</option>
+          <option>Site interativo</option>
+          <option>Animação curta</option>
+          <option>Quadrinhos + som + movimento</option>
+          <option>Protótipo comercial</option>
+        </select>
+      </label>
+      <label>Qual é o objetivo principal?<textarea name="objetivo"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Público">
+      <h2>3. Público e tom</h2>
+      <label>Para quem a obra foi criada?<textarea name="publico"></textarea></label>
+      <label>Tom da história
+        <select name="tom">
+          <option>Humor ácido</option><option>Drama com humor</option><option>Surrealista / poético</option>
+          <option>Adulto / psicológico</option><option>Outro</option>
+        </select>
+      </label>
+      <label>Existe conteúdo que exige classificação indicativa?<textarea name="classificacao"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Personagens">
+      <h2>4. Personagens</h2>
+      <label>Quais são os personagens principais?<textarea name="personagens"></textarea></label>
+      <label>Descreva a personalidade de Parlapoeta<textarea name="parlapoeta"></textarea></label>
+      <label>Descreva a personalidade da Dra. Ali / Ella Ali<textarea name="draAli"></textarea></label>
+      <label>Quais características visuais nunca podem ser alteradas?<textarea name="inalteraveis"></textarea></label>
+      <fieldset><legend>Material de referência disponível</legend>
+        <label class="check"><input type="checkbox" name="refs" value="Frente"> Frente</label>
+        <label class="check"><input type="checkbox" name="refs" value="Perfil"> Perfil</label>
+        <label class="check"><input type="checkbox" name="refs" value="Costas"> Costas</label>
+        <label class="check"><input type="checkbox" name="refs" value="Expressões"> Expressões</label>
+        <label class="check"><input type="checkbox" name="refs" value="Poses"> Poses</label>
+      </fieldset>
+    </section>
+
+    <section class="step" data-title="Narrativa">
+      <h2>5. Narrativa</h2>
+      <label>Qual é o conflito principal?<textarea name="conflito"></textarea></label>
+      <label>Qual transformação Parlapoeta atravessa?<textarea name="transformacao"></textarea></label>
+      <label>Qual mensagem você quer deixar ao leitor?<textarea name="mensagem"></textarea></label>
+      <label>Estrutura
+        <select name="estrutura">
+          <option>Linear</option><option>Linear com flashbacks</option><option>Com escolhas do leitor</option><option>Experimental / não linear</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="step" data-title="Interatividade">
+      <h2>6. Experiência digital</h2>
+      <fieldset><legend>Recursos desejados</legend>
+        <label class="check"><input type="checkbox" name="recursos" value="Navegação por cenas"> Navegação por cenas</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Balões em sequência"> Balões em sequência</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Zoom cinematográfico"> Zoom cinematográfico</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Tremor e impacto"> Tremor e impacto</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Parallax"> Parallax</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Objetos clicáveis"> Objetos clicáveis</label>
+        <label class="check"><input type="checkbox" name="recursos" value="Transições de memória"> Transições de memória</label>
+      </fieldset>
+      <label>Que movimentos você imagina?<textarea name="movimentos"></textarea></label>
+      <label>Quais cenas merecem maior impacto?<textarea name="impacto"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Áudio">
+      <h2>7. Som e voz</h2>
+      <fieldset><legend>O projeto deve ter</legend>
+        <label class="check"><input type="checkbox" name="audio" value="Música ambiente"> Música ambiente</label>
+        <label class="check"><input type="checkbox" name="audio" value="Efeitos sonoros"> Efeitos sonoros</label>
+        <label class="check"><input type="checkbox" name="audio" value="Narração"> Narração</label>
+        <label class="check"><input type="checkbox" name="audio" value="Dublagem"> Dublagem</label>
+      </fieldset>
+      <label>Já existem arquivos de áudio?
+        <select name="audioExiste"><option>Não</option><option>Alguns</option><option>Sim, a maior parte</option></select>
+      </label>
+      <label>Clima sonoro desejado<textarea name="climaSonoro"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Visual">
+      <h2>8. Direção visual</h2>
+      <label>O traço original deve ser preservado?
+        <select name="preservarTraco">
+          <option>Sim, totalmente</option><option>Sim, com pequenos ajustes digitais</option><option>Pode evoluir mantendo a identidade</option>
+        </select>
+      </label>
+      <label>Paleta de cores<input name="paleta"></label>
+      <label>Referências visuais<textarea name="referencias"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Materiais">
+      <h2>9. Materiais disponíveis</h2>
+      <fieldset><legend>O que já existe?</legend>
+        <label class="check"><input type="checkbox" name="materiais" value="Roteiro digital"> Roteiro digital</label>
+        <label class="check"><input type="checkbox" name="materiais" value="Páginas impressas"> Páginas impressas</label>
+        <label class="check"><input type="checkbox" name="materiais" value="Artes em alta resolução"> Artes em alta resolução</label>
+        <label class="check"><input type="checkbox" name="materiais" value="Personagens separados"> Personagens separados</label>
+        <label class="check"><input type="checkbox" name="materiais" value="Cenários separados"> Cenários separados</label>
+        <label class="check"><input type="checkbox" name="materiais" value="Logo / capa"> Logo / capa</label>
+      </fieldset>
+      <label>Algo importante ainda não digitalizado?<textarea name="naoDigitalizado"></textarea></label>
+    </section>
+
+    <section class="step" data-title="Protótipo">
+      <h2>10. Primeiro protótipo</h2>
+      <label>Qual cena você gostaria de transformar primeiro?<textarea name="cenaPiloto"></textarea></label>
+      <label>Quais 3 coisas precisam funcionar na primeira demonstração?<textarea name="tresCoisas"></textarea></label>
+      <label>O que você não quer de jeito nenhum que façamos?<textarea name="naoQuer"></textarea></label>
+      <label>“Vou saber que acertamos se...”<textarea name="criterioSucesso"></textarea></label>
+    </section>
+
+    <div class="actions">
+      <button type="button" id="prevBtn" class="secondary">← Anterior</button>
+      <button type="button" id="nextBtn">Próximo →</button>
+      <button type="submit" id="finishBtn" class="success hidden">Enviar diagnóstico</button>
+    </div>
+  </form>
+
+  <section id="result" class="result hidden" aria-live="polite">
+    <span class="eyebrow">Enviado com sucesso</span>
+    <h2>Diagnóstico registrado</h2>
+    <p id="resultMessage"></p>
+    <pre id="report"></pre>
+  </section>
+
+  <section id="setupWarning" class="warning hidden">
+    <strong>Integração ainda não configurada.</strong>
+    <p>Preencha SUPABASE_URL e SUPABASE_ANON_KEY no arquivo <code>config.js</code>.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

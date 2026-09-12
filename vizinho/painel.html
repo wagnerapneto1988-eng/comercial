@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel — Diagnósticos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="hero">
+    <div><span class="eyebrow">Painel de controle</span><h1>Diagnósticos</h1><p>Visualize, filtre e atualize os projetos recebidos.</p></div>
+    <a class="admin-link" href="index.html">Novo diagnóstico</a>
+  </header>
+
+  <section id="loginCard" class="panel">
+    <h2>Entrar no painel</h2>
+    <form id="loginForm" class="login-grid">
+      <label>E-mail<input type="email" id="email" required></label>
+      <label>Senha<input type="password" id="password" required></label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p class="muted">O acesso depende do Supabase Auth e da tabela <code>app_admins</code>.</p>
+    <div id="loginMsg" class="status-msg"></div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="toolbar">
+      <input id="search" placeholder="Buscar projeto, responsável ou contato">
+      <select id="statusFilter">
+        <option value="">Todos os status</option>
+        <option value="novo">Novo</option>
+        <option value="em_analise">Em análise</option>
+        <option value="proposta_enviada">Proposta enviada</option>
+        <option value="finalizado">Finalizado</option>
+      </select>
+      <button id="refreshBtn" class="secondary">Atualizar</button>
+      <button id="logoutBtn" class="secondary">Sair</button>
+    </div>
+
+    <section class="stats">
+      <article><strong id="totalCount">0</strong><span>Total</span></article>
+      <article><strong id="newCount">0</strong><span>Novos</span></article>
+      <article><strong id="analysisCount">0</strong><span>Em análise</span></article>
+    </section>
+
+    <section id="cards" class="cards"></section>
+    <p id="emptyState" class="muted hidden">Nenhum diagnóstico encontrado.</p>
+  </section>
+
+  <section id="setupWarning" class="warning hidden">
+    <strong>Integração ainda não configurada.</strong>
+    <p>Preencha SUPABASE_URL e SUPABASE_ANON_KEY no arquivo <code>config.js</code>.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="painel.js"></script>
+</body>
+</html>
